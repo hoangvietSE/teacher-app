@@ -1,0 +1,142 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_login"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/space_24"
+        android:src="@drawable/ic_title_white" />
+
+    <!--<android.support.design.widget.TextInputLayout-->
+    <!--android:id="@+id/tilSignInEmail"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_marginLeft="@dimen/space_24"-->
+    <!--android:layout_marginRight="@dimen/space_24"-->
+    <!--android:hint="@string/edt.sign.in.username"-->
+    <!--android:textColorHint="@color/white_dark">-->
+
+    <!--<EditText-->
+    <!--android:id="@+id/edtSignInEmail"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="@dimen/height_40"-->
+    <!--android:backgroundTint="@color/colorPrimaryDark"-->
+    <!--android:imeOptions="actionNext"-->
+    <!--android:inputType="textEmailAddress"-->
+    <!--android:padding="@dimen/space_8"-->
+    <!--android:textColor="@android:color/black"-->
+    <!--android:textSize="@dimen/text_16" />-->
+
+    <!--</android.support.design.widget.TextInputLayout>-->
+
+    <!--<android.support.design.widget.TextInputLayout-->
+    <!--android:id="@+id/tilSignInPassword"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_marginLeft="@dimen/space_24"-->
+    <!--android:layout_marginRight="@dimen/space_24"-->
+    <!--android:hint="@string/edt.sign.in.password"-->
+    <!--android:textColorHint="@color/white_dark">-->
+
+    <!--<EditText-->
+    <!--android:id="@+id/edtSignInPassword"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="@dimen/height_40"-->
+    <!--android:backgroundTint="@color/colorPrimaryDark"-->
+    <!--android:imeOptions="actionNext"-->
+    <!--android:inputType="textPassword"-->
+    <!--android:padding="@dimen/space_8"-->
+    <!--android:textColor="@android:color/black"-->
+    <!--android:textSize="@dimen/text_16" />-->
+
+    <!--</android.support.design.widget.TextInputLayout>-->
+
+    <!--<com.trinhbk.lecturelivestream.widget.AutoHighlightButton-->
+    <!--android:id="@+id/btnSignIn"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_margin="@dimen/space_24"-->
+    <!--android:background="@android:color/white"-->
+    <!--android:text="SIGN IN" />-->
+
+    <!--<LinearLayout-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:orientation="horizontal">-->
+
+    <!--<TextView-->
+    <!--android:id="@+id/tvSignInForgot"-->
+    <!--android:layout_width="0dp"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_weight="1"-->
+    <!--android:gravity="right"-->
+    <!--android:paddingRight="@dimen/space_8"-->
+    <!--android:text="@string/tv.sign.in.forgot"-->
+    <!--android:textColor="@color/white"-->
+    <!--android:textSize="@dimen/text_16" />-->
+
+    <!--<TextView-->
+    <!--android:layout_width="@dimen/height_half"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:layout_marginLeft="@dimen/space_8"-->
+    <!--android:layout_marginRight="@dimen/space_8"-->
+    <!--android:background="@color/white" />-->
+
+    <!--<TextView-->
+    <!--android:id="@+id/tvSignInRegister"-->
+    <!--android:layout_width="0dp"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_weight="1"-->
+    <!--android:gravity="left"-->
+    <!--android:paddingLeft="@dimen/space_8"-->
+    <!--android:text="@string/tv.sign.in.register"-->
+    <!--android:textColor="@color/white"-->
+    <!--android:textSize="@dimen/text_16" />-->
+    <!--</LinearLayout>-->
+
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/btnGoogle"
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        android:layout_margin="@dimen/space_24"
+        android:background="#DC4A3D"
+        android:drawableLeft="@drawable/ic_google_normal"
+        android:gravity="center"
+        android:paddingLeft="@dimen/space_16"
+        android:text="@string/btn.login.google"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_16" />
+
+    <!--<com.google.android.gms.common.SignInButton-->
+        <!--android:id="@+id/btnGoogle"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="?actionBarSize"-->
+        <!--android:layout_margin="@dimen/space_24"-->
+        <!--android:scaleType="fitCenter"/>-->
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/tv.login.divide"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_20" />
+
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/btnFacebook"
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        android:layout_margin="@dimen/space_24"
+        android:background="#3C5A9A"
+        android:drawableLeft="@drawable/ic_facebook_normal"
+        android:gravity="center"
+        android:paddingLeft="@dimen/space_16"
+        android:scaleType="fitCenter"
+        android:text="@string/btn.login.facebook"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_16" />
+</LinearLayout>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="space_4">4dp</dimen>
+    <dimen name="space_8">8dp</dimen>
+    <dimen name="space_12">12dp</dimen>
+    <dimen name="space_16">16dp</dimen>
+    <dimen name="space_24">24dp</dimen>
+    <dimen name="space_48">48dp</dimen>
+
+    <dimen name="height_half">0.5dp</dimen>
+    <dimen name="height_24">24dp</dimen>
+    <dimen name="height_40">40dp</dimen>
+    <dimen name="height_64">64dp</dimen>
+    <dimen name="height_80">80dp</dimen>
+
+    <!-- TEXT -->
+    <dimen name="text_8">8sp</dimen>
+    <dimen name="text_11">11sp</dimen>
+    <dimen name="text_13">13sp</dimen> <!-- Leading 20/24pt -->
+    <dimen name="text_14">14sp</dimen>
+    <dimen name="text_15">15sp</dimen> <!-- Leading 24/28pt -->
+    <dimen name="text_16">16sp</dimen>
+    <dimen name="text_18">18sp</dimen>
+    <dimen name="text_20">20sp</dimen>
+    <dimen name="text_24">24sp</dimen> <!-- Leading 32pt -->
+    <dimen name="text_34">34sp</dimen> <!-- Leading 40pt -->
+    <dimen name="text_45">45sp</dimen> <!-- Leading 48pt -->
+</resources>

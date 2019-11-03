@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <RadioGroup
+            android:id="@+id/rgSettingVideo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/space_8"
+            android:checkedButton="@+id/medium"
+            android:gravity="center|left">
+
+            <RadioButton
+                android:id="@+id/high"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="High"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/text_16" />
+
+            <RadioButton
+                android:id="@+id/medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Medium"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/text_16" />
+
+            <RadioButton
+                android:id="@+id/low"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Low"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/text_16" />
+
+        </RadioGroup>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/space_8"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/edtVideoName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="Name Video" />
+
+            <ImageView
+                android:id="@+id/btnSettingVideoFolder"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:padding="@dimen/space_8"
+                android:src="@drawable/ic_folder_black" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tvPathVideo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/space_8" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btnSettingVideoCancel"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/space_8"
+                android:layout_weight="1"
+                android:text="Cancel"
+                android:textColor="#fff" />
+
+            <Button
+                android:id="@+id/btnSettingVideoDone"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/space_8"
+                android:layout_weight="1"
+                android:text="OK"
+                android:textColor="#fff" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+
+</RelativeLayout>

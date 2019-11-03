@@ -1,0 +1,40 @@
+<resources>
+    <string name="app_name">LectureLiveStream</string>
+    226981998041-iutk0tsccke1drjaqlpc2ung74qta131.apps.googleusercontent.com
+    <string name="facebook_app_id">1192417877622499</string>
+    <string name="fb_login_protocol_scheme">fb1192417877622499</string>
+    <string name="google_services_api_key">AIzaSyDaYr1XN7y8a9Ow_4vtt6Iad7CUmI4SQkQ</string>
+
+    <!-- ERROR -->
+    <string name="error">error</string>
+    <string name="error.format">error format</string>
+
+    <!-- DIALOG -->
+    <string name="dialog.loading">Processing&#8230;</string>
+
+    <!-- SIGN IN SCREEN -->
+    <string name="edt.sign.in.username">Username</string>
+    <string name="edt.sign.in.password">Password</string>
+    <string name="tv.sign.in.forgot">Forgot Password</string>
+    <string name="tv.sign.in.register">Register</string>
+    <string name="tv.login.divide">------ OR ------</string>
+    <string name="btn.login.google">Connect with Google</string>
+    <string name="btn.login.facebook">Connect with Facebook</string>
+
+    <!-- HOME SCREEN -->
+    <string name="tv.home.live">Phát trực tiếp bài giảng</string>
+    <string name="tv.home.video">Tạo video bài giảng</string>
+
+    <!-- VIDEO SCREEN -->
+    <string name="tv.title.action.bar">Bài giảng đã tạo</string>
+    <string name="dialog.syntax.login">Bạn cần phải đăng nhập để sử dụng chức năng này!</string>
+
+    <!-- TEACHER SCREEN-->
+    <string name="tv.teacher.page.number">Page %s</string>
+    <string name="dialog.confirm.logout">Bạn có muốn đăng xuất tài khoản bây giờ?</string>
+
+    <string name="tv.item.video.share">Share</string>
+    <string name="tv.item.video.delete">Delete</string>
+    <string name="tv.item.video.edit">Crop</string>
+
+</resources>

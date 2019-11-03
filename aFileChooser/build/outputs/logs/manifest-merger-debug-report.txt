@@ -1,0 +1,19 @@
+-- Merging decision tree log ---
+manifest
+ADDED from D:\HUSTER\20191_Project2\project\mobile-lecturelivestream\aFileChooser\src\main\AndroidManifest.xml:17:2-20:12
+INJECTED from D:\HUSTER\20191_Project2\project\mobile-lecturelivestream\aFileChooser\src\main\AndroidManifest.xml:17:2-20:12
+INJECTED from D:\HUSTER\20191_Project2\project\mobile-lecturelivestream\aFileChooser\src\main\AndroidManifest.xml:17:2-20:12
+	package
+		ADDED from D:\HUSTER\20191_Project2\project\mobile-lecturelivestream\aFileChooser\src\main\AndroidManifest.xml:18:5-40
+		INJECTED from D:\HUSTER\20191_Project2\project\mobile-lecturelivestream\aFileChooser\src\main\AndroidManifest.xml
+		INJECTED from D:\HUSTER\20191_Project2\project\mobile-lecturelivestream\aFileChooser\src\main\AndroidManifest.xml
+	xmlns:android
+		ADDED from D:\HUSTER\20191_Project2\project\mobile-lecturelivestream\aFileChooser\src\main\AndroidManifest.xml:17:12-70
+uses-sdk
+INJECTED from D:\HUSTER\20191_Project2\project\mobile-lecturelivestream\aFileChooser\src\main\AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from D:\HUSTER\20191_Project2\project\mobile-lecturelivestream\aFileChooser\src\main\AndroidManifest.xml
+INJECTED from D:\HUSTER\20191_Project2\project\mobile-lecturelivestream\aFileChooser\src\main\AndroidManifest.xml
+	android:minSdkVersion
+		INJECTED from D:\HUSTER\20191_Project2\project\mobile-lecturelivestream\aFileChooser\src\main\AndroidManifest.xml
+		ADDED from D:\HUSTER\20191_Project2\project\mobile-lecturelivestream\aFileChooser\src\main\AndroidManifest.xml
+		INJECTED from D:\HUSTER\20191_Project2\project\mobile-lecturelivestream\aFileChooser\src\main\AndroidManifest.xml

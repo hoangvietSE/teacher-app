@@ -1,0 +1,231 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal">
+
+    <TextureView
+        android:layout_weight="1"
+        android:id="@+id/textureView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true" />
+
+
+    <RelativeLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1">
+        <FrameLayout
+            android:id="@+id/spenViewContainer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <RelativeLayout
+                android:id="@+id/spenViewLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </FrameLayout>
+
+        <LinearLayout
+            android:id="@+id/llMenuMore"
+            android:layout_width="match_parent"
+            android:layout_height="?actionBarSize"
+            android:padding="@dimen/space_8">
+
+            <ImageButton
+                android:id="@+id/ivPen"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/space_4"
+                android:layout_weight="1"
+                android:background="@drawable/selector_silver_gray"
+                android:padding="@dimen/space_4"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_brush" />
+
+            <ImageButton
+                android:id="@+id/ibTempBrush"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/space_4"
+                android:layout_weight="1"
+                android:background="@drawable/selector_silver_gray"
+                android:padding="@dimen/space_4"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_laze" />
+
+            <ImageButton
+                android:id="@+id/ivEraser"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/space_4"
+                android:layout_weight="1"
+                android:background="@drawable/selector_silver_gray"
+                android:padding="@dimen/space_4"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_eraser" />
+
+
+            <ImageButton
+                android:id="@+id/ivAddImage"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/space_4"
+                android:layout_weight="1"
+                android:background="@color/silver"
+                android:padding="@dimen/space_4"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_image" />
+
+            <ImageButton
+                android:id="@+id/ibInsertImage"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/space_4"
+                android:layout_weight="1"
+                android:background="@color/silver"
+                android:padding="@dimen/space_4"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_bitmap" />
+
+            <ImageButton
+                android:id="@+id/ibInsertFile"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/space_4"
+                android:layout_weight="1"
+                android:background="@color/silver"
+                android:padding="@dimen/space_4"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_import" />
+
+            <ImageButton
+                android:id="@+id/ibAddVideo"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/space_4"
+                android:layout_weight="1"
+                android:background="@color/silver"
+                android:padding="@dimen/space_4"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_video_file" />
+
+            <ImageButton
+                android:id="@+id/ibCaptureScreen"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/space_4"
+                android:layout_weight="1"
+                android:background="@color/silver"
+                android:padding="@dimen/space_4"
+                android:src="@drawable/ic_camera_capture_24dp"
+                android:visibility="gone" />
+
+            <ImageButton
+                android:id="@+id/ibText"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/space_4"
+                android:layout_weight="1"
+                android:background="@drawable/selector_silver_gray"
+                android:padding="@dimen/space_4"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_text" />
+
+            <ImageButton
+                android:id="@+id/ibSelection"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/space_4"
+                android:layout_weight="1"
+                android:background="@drawable/selector_silver_gray"
+                android:padding="@dimen/space_4"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_move" />
+
+            <ImageButton
+                android:id="@+id/ibBound"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/space_4"
+                android:layout_weight="1"
+                android:background="@drawable/selector_silver_gray"
+                android:padding="@dimen/space_4"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_shape" />
+
+            <ImageButton
+                android:id="@+id/ibAddPage"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/space_4"
+                android:layout_weight="1"
+                android:background="@color/silver"
+                android:padding="@dimen/space_4"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_page" />
+
+            <ImageButton
+                android:id="@+id/ivUndo"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/space_4"
+                android:layout_weight="1"
+                android:background="@color/silver"
+                android:padding="@dimen/space_4"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_return" />
+
+            <ImageButton
+                android:id="@+id/ivRedo"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/space_4"
+                android:layout_weight="1"
+                android:background="@color/silver"
+                android:padding="@dimen/space_4"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_next" />
+
+            <ImageButton
+                android:id="@+id/ibRecord"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/space_4"
+                android:layout_weight="1"
+                android:background="@drawable/selector_silver_gray"
+                android:padding="@dimen/space_4"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_record" />
+
+            <ImageButton
+                android:id="@+id/ibSave"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/space_4"
+                android:layout_weight="1"
+                android:background="@color/silver"
+                android:padding="@dimen/space_4"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_save" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tvPageNumber"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/llMenuMore"
+            android:layout_centerHorizontal="true"
+            android:textColor="#FFAAAAAA"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            tools:text="Page 0" />
+
+    </RelativeLayout>
+
+</LinearLayout>
