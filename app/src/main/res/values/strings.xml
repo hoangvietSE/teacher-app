@@ -36,5 +36,8 @@
     <string name="tv.item.video.share">Share</string>
     <string name="tv.item.video.delete">Delete</string>
     <string name="tv.item.video.edit">Crop</string>
+    <string name="splash_no_internet_connection_warning">Kết nối Internet để có trải nghiệm tốt nhất</string>
+    <string name="teacher_min_time_record_error">Vui lòng tạo video bài giảng tối thiểu một phút</string>
+    <string name="teacher_no_save_error">Vui lòng lưu video bài giảng</string>
 
 </resources>

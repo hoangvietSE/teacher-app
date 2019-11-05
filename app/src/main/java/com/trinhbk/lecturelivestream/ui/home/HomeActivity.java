@@ -28,6 +28,7 @@ import com.trinhbk.lecturelivestream.ui.signin.LoginActivity;
 import com.trinhbk.lecturelivestream.ui.teacher.TeacherActivity;
 import com.trinhbk.lecturelivestream.utils.AppPreferences;
 import com.trinhbk.lecturelivestream.utils.Constants;
+import com.trinhbk.lecturelivestream.utils.NetworkUtil;
 import com.trinhbk.lecturelivestream.utils.PermissionUtil;
 import com.trinhbk.lecturelivestream.youtube.EventData;
 import com.trinhbk.lecturelivestream.youtube.YouTubeApi;
@@ -87,6 +88,20 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
     }
 
     private void initEvent() {
+        if (!NetworkUtil.isConnectedToNetwork(this)) {
+            AppPreferences.INSTANCE.setKeyBoolean(Constants.KeyPreference.IS_LOGINED, false);
+            if (AppPreferences.INSTANCE.getKeyBoolean(Constants.KeyPreference.LOGIN_FROM_FACEBOOK)) {
+                AppPreferences.INSTANCE.setKeyBoolean(Constants.KeyPreference.LOGIN_FROM_FACEBOOK, false);
+                AppPreferences.INSTANCE.setKeyString(Constants.KeyPreference.RTMP_FACEBOOK, "");
+                AppPreferences.INSTANCE.setKeyString(Constants.KeyPreference.USER_ID, "");
+                LoginManager.getInstance().logOut();
+
+            } else {
+                AppPreferences.INSTANCE.setKeyBoolean(Constants.KeyPreference.LOGIN_FROM_GOOGLE, false);
+                AppPreferences.INSTANCE.setKeyString(Constants.KeyPreference.ACCOUNT_NAME, "");
+                AppPreferences.INSTANCE.setKeyString(Constants.KeyPreference.RTMP_GOOGLE, "");
+            }
+        }
         changeUI(AppPreferences.INSTANCE.getKeyBoolean(Constants.KeyPreference.IS_LOGINED));
         llLiveStream.setOnClickListener(this);
         llCreateVideo.setOnClickListener(this);
