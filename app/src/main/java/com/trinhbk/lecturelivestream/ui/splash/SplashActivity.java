@@ -20,7 +20,7 @@ public class SplashActivity extends BaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (!NetworkUtil.isConnectedToNetwork(this)){
-            showCautionDialog(getResources().getString(R.string.no_internet_connection_warning),"", liveDialog ->{
+            showCautionDialog(getResources().getString(R.string.splash_no_internet_connection_warning),"", liveDialog ->{
                 liveDialog.dismiss();
                 startActivity(new Intent(this, HomeActivity.class));
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
