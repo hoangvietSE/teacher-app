@@ -59,8 +59,8 @@ public class MergeVideoActivity extends BaseActivity {
         File f = new File(baseDir + File.separator + fileName);
         String video1 = baseDir + "/vandam.mp4";
         String video2 = baseDir + "/doahoahong.mp4";
-//        String video3 = baseDir + "/BeSureToWear.mp4";
-        String[] videos = new String[]{video1, video2};
+        String video3 = baseDir + "/56.mp4";
+        String[] videos = new String[]{video1, video2, video3};
         try {
             showLoading();
             appendVideo(videos);
@@ -165,7 +165,7 @@ public class MergeVideoActivity extends BaseActivity {
         if (videoTracks.size() > 0) {
             result.addTrack(new AppendTrack(videoTracks.toArray(new Track[videoTracks.size()])));
         }
-        String videoCombinePath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES).getAbsolutePath() + "/testphatcuoi.mp4";
+        String videoCombinePath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES).getAbsolutePath() + "/chotnao.mp4";
         Container out = new DefaultMp4Builder().build(result);
         FileChannel fc = new RandomAccessFile(videoCombinePath, "rw").getChannel();
         out.writeContainer(fc);

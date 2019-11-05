@@ -36,5 +36,6 @@
     <string name="tv.item.video.share">Share</string>
     <string name="tv.item.video.delete">Delete</string>
     <string name="tv.item.video.edit">Crop</string>
+    <string name="no_internet_connection_warning">Kết nối Internet để có trải nghiệm tốt nhất</string>
 
 </resources>

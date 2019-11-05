@@ -31,13 +31,16 @@
 
         <activity android:name=".ui.signin.LoginActivity" />
 
-        <activity android:name=".MergeVideoActivity">
+        <activity
+            android:theme="@style/SplashTheme"
+            android:name=".ui.splash.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".ui.home.HomeActivity"/>
         <activity android:name=".ui.clip.ListVideoActivity" />
         <activity android:name=".ui.trimmer.EditVideoActivity" />
         <activity android:name=".ui.teacher.TeacherActivity" />
