@@ -112,11 +112,11 @@ public class SettingVideoDFragment extends DialogFragment {
         btnDone.setOnClickListener(view -> {
             dismiss();
             pathFile = pathFile + (edtName.getText().toString().isEmpty() ? Calendar.getInstance().getTimeInMillis() : edtName.getText().toString()) + ".mp4";
-            mCallback.onDone(pathFile, bitRate, frameRate);
+            mCallback.onDone(pathFile, bitRate, frameRate, edtName.getText().toString());
         });
     }
 
     public interface OnClickSettingVideo {
-        void onDone(String pathVideo, int bitRate, int frameRate);
+        void onDone(String pathVideo, int bitRate, int frameRate, String originName);
     }
 }

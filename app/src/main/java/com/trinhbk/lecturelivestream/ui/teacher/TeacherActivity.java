@@ -110,6 +110,7 @@ import com.trinhbk.lecturelivestream.ui.home.HomeActivity;
 import com.trinhbk.lecturelivestream.utils.AppPreferences;
 import com.trinhbk.lecturelivestream.utils.Constants;
 import com.trinhbk.lecturelivestream.utils.DeviceUtil;
+import com.trinhbk.lecturelivestream.utils.RecordUtil;
 import com.trinhbk.lecturelivestream.utils.Utilities;
 import com.trinhbk.lecturelivestream.youtube.YouTubeApi;
 import com.trinhbk.lecturelivestream.youtube.YouTubeNewSingleton;
@@ -162,7 +163,7 @@ public class TeacherActivity extends BaseActivity implements SettingVideoDFragme
     private static final SparseIntArray ORIENTATIONS = new SparseIntArray();
     private static final int CAMERA_BACK = 0;
     private static final int CAMERA_FONT = 1;
-    private static final long MIN_TIME_RECORD = 6L;
+    private static final long MIN_TIME_RECORD = 10000L;
 
     static {
         ORIENTATIONS.append(Surface.ROTATION_0, 90);
@@ -227,6 +228,10 @@ public class TeacherActivity extends BaseActivity implements SettingVideoDFragme
     private FFmpeg fFmpeg;
     CameraCharacteristics characteristics;
     private boolean isSaveRecord = true;
+    private boolean checkSessionRecord = false;
+    private ArrayList<String> listRecordsPath = new ArrayList<>();
+    private ArrayList<String> listRecordsName = new ArrayList<>();
+    private int recordStatus = 0;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -586,8 +591,24 @@ public class TeacherActivity extends BaseActivity implements SettingVideoDFragme
         ibRedo.setEnabled(mPenPageDoc.isRedoable());
 
         ibRecord.setOnClickListener(view -> {
-            SettingVideoDFragment dialogFragment = SettingVideoDFragment.newInstance();
-            dialogFragment.show(getSupportFragmentManager(), dialogFragment.getClass().getSimpleName());
+            if (recordStatus == 1) {
+                if (System.currentTimeMillis() - onTimeRecord < MIN_TIME_RECORD) {
+                    showCautionDialog(getResources().getString(R.string.teacher_min_time_record_error), "", liveDialog -> {
+                        liveDialog.dismiss();
+                    });
+                } else {
+                    recordStatus = 0;
+                    closeSettingView();
+//                    Toast.makeText(TeacherActivity.this, "Video is saved", Toast.LENGTH_SHORT).show();
+                    Log.v(TAG, "Stopping Recording");
+                    stopScreenSharing();
+                }
+            } else {
+                checkSessionRecord = true;
+                recordStatus = 1;
+                SettingVideoDFragment dialogFragment = SettingVideoDFragment.newInstance();
+                dialogFragment.show(getSupportFragmentManager(), dialogFragment.getClass().getSimpleName());
+            }
         });
 
         ibSave.setOnClickListener(view -> {
@@ -600,6 +621,10 @@ public class TeacherActivity extends BaseActivity implements SettingVideoDFragme
 //                    Toast.makeText(TeacherActivity.this, "Video is saved", Toast.LENGTH_SHORT).show();
                 Log.v(TAG, "Stopping Recording");
                 stopScreenSharing();
+                if (checkSessionRecord == true && listRecordsPath.size() >= 2) {
+                    RecordUtil.getInstance().appendVideo(listRecordsPath,listRecordsName);
+                }
+                clearRecord();
             }
         });
 
@@ -792,10 +817,12 @@ public class TeacherActivity extends BaseActivity implements SettingVideoDFragme
     }
 
     @Override
-    public void onDone(String pathVideo, int bitRate, int frameRate) {
+    public void onDone(String pathVideo, int bitRate, int frameRate, String originName) {
         this.pathVideo = pathVideo;
         this.bitRate = bitRate;
         this.frameRate = frameRate;
+        listRecordsName.add(originName);
+        listRecordsPath.add(RecordUtil.baseDir + "/" + originName + ".mp4");
         showLoading();
         if (AppPreferences.INSTANCE.getKeyBoolean(Constants.KeyPreference.IS_LOGINED)) {
             startActivityForResult(rtmpDisplay.sendIntent(), REQUEST_CODE_STREAM);
@@ -859,7 +886,6 @@ public class TeacherActivity extends BaseActivity implements SettingVideoDFragme
             try {
                 rtmpDisplay.startRecord(pathVideo);
                 ibRecord.setImageResource(R.drawable.ic_stop);
-                ibRecord.setEnabled(false);
             } catch (IOException e) {
                 rtmpDisplay.stopRecord();
                 Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
@@ -1551,7 +1577,6 @@ public class TeacherActivity extends BaseActivity implements SettingVideoDFragme
 //            super.onPostExecute(aVoid);
             hideLoading();
             ibRecord.setImageResource(R.drawable.ic_stop);
-            ibRecord.setEnabled(false);
         }
     }
 
@@ -1722,14 +1747,21 @@ public class TeacherActivity extends BaseActivity implements SettingVideoDFragme
             showCautionDialog(getResources().getString(R.string.teacher_min_time_record_error), "", liveDialog -> {
                 liveDialog.dismiss();
             });
-        } else{
-            if(isSaveRecord){
+        } else {
+            if (isSaveRecord) {
                 super.onBackPressed();
-            }else{
+            } else {
                 showCautionDialog(getResources().getString(R.string.teacher_no_save_error), "", liveDialog -> {
                     liveDialog.dismiss();
                 });
             }
         }
+    }
+
+    private void clearRecord() {
+        recordStatus = 0;
+        checkSessionRecord = false;
+        listRecordsName.clear();
+        listRecordsPath.clear();
     }
 }
