@@ -638,7 +638,7 @@ public class TeacherActivity extends BaseActivity implements SettingVideoDFragme
         });
 
         ibSave.setOnClickListener(view -> {
-            if (System.currentTimeMillis() - onTimeRecord < MIN_TIME_RECORD) {
+            if (System.currentTimeMillis() - onTimeRecord < MIN_TIME_RECORD && listRecordsName.size() == 1 && listRecordsPath.size() == 1) {
                 showCautionDialog(getResources().getString(R.string.teacher_min_time_record_error), "", liveDialog -> {
                     liveDialog.dismiss();
                 });
@@ -1549,9 +1549,9 @@ public class TeacherActivity extends BaseActivity implements SettingVideoDFragme
         protected void onPostExecute(Void aVoid) {
 //            super.onPostExecute(aVoid);
             hideLoading();
-            if(checkSessionRecord){
+            if (checkSessionRecord) {
                 ToastUtil.getInstance().show(getString(R.string.teacher_save_resume));
-            }else{
+            } else {
                 ToastUtil.getInstance().show(getString(R.string.teacher_record_start));
             }
             startCountUpTimer();
@@ -1608,9 +1608,9 @@ public class TeacherActivity extends BaseActivity implements SettingVideoDFragme
 //            super.onPostExecute(aVoid);
             hideLoading();
             ibRecord.setImageResource(R.drawable.ic_stop);
-            if(checkSessionRecord){
+            if (checkSessionRecord) {
                 ToastUtil.getInstance().show(getString(R.string.teacher_save_resume));
-            }else{
+            } else {
                 ToastUtil.getInstance().show(getString(R.string.teacher_record_start));
             }
             startCountUpTimer();
