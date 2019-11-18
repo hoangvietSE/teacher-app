@@ -1060,22 +1060,16 @@ public class TeacherActivity extends BaseActivity implements SettingVideoDFragme
             }
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
-//            Toast.makeText(this, "ObjectRuntimeInfo class not found.", Toast.LENGTH_SHORT).show();
         } catch (InstantiationException e) {
             e.printStackTrace();
-//            Toast.makeText(this, "Failed to access the ObjectRuntimeInfo constructor.", Toast.LENGTH_SHORT).show();
-        } catch (IllegalAccessException e) {
             e.printStackTrace();
-//            Toast.makeText(this, "Failed to access the ObjectRuntimeInfo field or method.", Toast.LENGTH_SHORT).show();
         } catch (Exception e) {
             e.printStackTrace();
-//            Toast.makeText(this, "ObjectRuntimeInfo is not loaded.", Toast.LENGTH_SHORT).show();
         }
     }
 
     private void startObjectRuntime() {
         if (mVideoRuntime == null) {
-//            Toast.makeText(this, "ObjectRuntime is not loaded \n Load Plug-in First !!", Toast.LENGTH_SHORT).show();
             return;
         }
         SpenObjectBase objectBase = null;
@@ -1555,7 +1549,11 @@ public class TeacherActivity extends BaseActivity implements SettingVideoDFragme
         protected void onPostExecute(Void aVoid) {
 //            super.onPostExecute(aVoid);
             hideLoading();
-            ToastUtil.getInstance().show(getString(R.string.teacher_record_start));
+            if(checkSessionRecord){
+                ToastUtil.getInstance().show(getString(R.string.teacher_save_resume));
+            }else{
+                ToastUtil.getInstance().show(getString(R.string.teacher_record_start));
+            }
             startCountUpTimer();
         }
     }
@@ -1610,7 +1608,11 @@ public class TeacherActivity extends BaseActivity implements SettingVideoDFragme
 //            super.onPostExecute(aVoid);
             hideLoading();
             ibRecord.setImageResource(R.drawable.ic_stop);
-            ToastUtil.getInstance().show(getString(R.string.teacher_record_start));
+            if(checkSessionRecord){
+                ToastUtil.getInstance().show(getString(R.string.teacher_save_resume));
+            }else{
+                ToastUtil.getInstance().show(getString(R.string.teacher_record_start));
+            }
             startCountUpTimer();
         }
     }
