@@ -212,6 +212,16 @@
         android:textStyle="bold"
         tools:text="Page 0" />
 
+    <Chronometer
+        android:id="@+id/simpleChronometer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvPageNumber"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/blue"
+        android:textSize="@dimen/text_16"
+        android:textStyle="bold" />
+
     <TextureView
         android:id="@+id/textureView"
         android:layout_width="150dp"
