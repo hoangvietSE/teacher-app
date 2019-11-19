@@ -12,7 +12,6 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.graphics.Matrix;
 import android.graphics.PointF;
 import android.graphics.Rect;
 import android.graphics.RectF;
@@ -45,24 +44,20 @@ import android.view.MotionEvent;
 import android.view.Surface;
 import android.view.TextureView;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.Chronometer;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.VideoView;
 
-import com.camerakit.CameraKitView;
 import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
 import com.facebook.HttpMethod;
-import com.github.hiteshsondhi88.libffmpeg.ExecuteBinaryResponseHandler;
 import com.github.hiteshsondhi88.libffmpeg.FFmpeg;
 import com.github.hiteshsondhi88.libffmpeg.FFmpegLoadBinaryResponseHandler;
-import com.github.hiteshsondhi88.libffmpeg.exceptions.FFmpegCommandAlreadyRunningException;
 import com.github.hiteshsondhi88.libffmpeg.exceptions.FFmpegNotSupportedException;
 import com.google.api.client.googleapis.extensions.android.gms.auth.UserRecoverableAuthIOException;
 import com.obsez.android.lib.filechooser.ChooserDialog;
@@ -94,8 +89,9 @@ import com.samsung.android.sdk.pen.plugin.interfaces.SpenObjectRuntimeInterface;
 import com.samsung.android.sdk.pen.settingui.SpenSettingEraserLayout;
 import com.samsung.android.sdk.pen.settingui.SpenSettingPenLayout;
 import com.samsung.android.sdk.pen.settingui.SpenSettingTextLayout;
-import com.trinhbk.lecturelivestream.MainApplication;
+import com.trinhbk.lecturelivestream.application.MainApplication;
 import com.trinhbk.lecturelivestream.R;
+import com.trinhbk.lecturelivestream.customview.MovableFloatingActionButton;
 import com.trinhbk.lecturelivestream.network.LiveSiteService;
 import com.trinhbk.lecturelivestream.network.response.FileResponse;
 import com.trinhbk.lecturelivestream.ui.BaseActivity;
@@ -187,6 +183,8 @@ public class TeacherActivity extends BaseActivity implements SettingVideoDFragme
     private ImageButton ibSave;
     private TextView tvNumberPage;
     private Chronometer chronometer;
+    private MovableFloatingActionButton movableFloatingActionButton;
+    private LinearLayout llMenuMore;
 
     private FrameLayout penViewContainer;
     private RelativeLayout penViewLayout;
@@ -347,6 +345,8 @@ public class TeacherActivity extends BaseActivity implements SettingVideoDFragme
         assert textureView != null;
         textureView.setSurfaceTextureListener(textureListener);
         chronometer = findViewById(R.id.simpleChronometer);
+        movableFloatingActionButton = findViewById(R.id.fab);
+        llMenuMore = findViewById(R.id.llMenuMore);
     }
 
     private void initListener() {
@@ -360,6 +360,16 @@ public class TeacherActivity extends BaseActivity implements SettingVideoDFragme
                     } else {
                         openCamera(CAMERA_BACK);
                     }
+                }
+            }
+        });
+        movableFloatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (llMenuMore.getVisibility() == View.VISIBLE) {
+                    llMenuMore.setVisibility(View.GONE);
+                } else {
+                    llMenuMore.setVisibility(View.VISIBLE);
                 }
             }
         });
@@ -638,7 +648,7 @@ public class TeacherActivity extends BaseActivity implements SettingVideoDFragme
         });
 
         ibSave.setOnClickListener(view -> {
-            if (System.currentTimeMillis() - onTimeRecord < MIN_TIME_RECORD && listRecordsName.size() == 1 && listRecordsPath.size() == 1) {
+            if (System.currentTimeMillis() - onTimeRecord < MIN_TIME_RECORD) {
                 showCautionDialog(getResources().getString(R.string.teacher_min_time_record_error), "", liveDialog -> {
                     liveDialog.dismiss();
                 });
@@ -1549,7 +1559,7 @@ public class TeacherActivity extends BaseActivity implements SettingVideoDFragme
         protected void onPostExecute(Void aVoid) {
 //            super.onPostExecute(aVoid);
             hideLoading();
-            if (checkSessionRecord) {
+            if (listRecordsName.size() > 1 && listRecordsPath.size() > 1) {
                 ToastUtil.getInstance().show(getString(R.string.teacher_save_resume));
             } else {
                 ToastUtil.getInstance().show(getString(R.string.teacher_record_start));
@@ -1608,7 +1618,7 @@ public class TeacherActivity extends BaseActivity implements SettingVideoDFragme
 //            super.onPostExecute(aVoid);
             hideLoading();
             ibRecord.setImageResource(R.drawable.ic_stop);
-            if (checkSessionRecord) {
+            if (listRecordsName.size() > 1 && listRecordsPath.size() > 1) {
                 ToastUtil.getInstance().show(getString(R.string.teacher_save_resume));
             } else {
                 ToastUtil.getInstance().show(getString(R.string.teacher_record_start));

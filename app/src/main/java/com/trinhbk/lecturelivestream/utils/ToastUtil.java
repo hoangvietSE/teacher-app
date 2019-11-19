@@ -2,7 +2,7 @@ package com.trinhbk.lecturelivestream.utils;
 
 import android.widget.Toast;
 
-import com.trinhbk.lecturelivestream.MainApplication;
+import com.trinhbk.lecturelivestream.application.MainApplication;
 
 public class ToastUtil {
     private ToastUtil() {
