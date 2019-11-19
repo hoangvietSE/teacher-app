@@ -1,4 +1,4 @@
-package com.trinhbk.lecturelivestream;
+package com.trinhbk.lecturelivestream.application;
 
 import android.app.Application;
 import android.content.Context;

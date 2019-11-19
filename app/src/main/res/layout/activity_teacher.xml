@@ -4,6 +4,7 @@
     android:id="@+id/drawView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
     android:orientation="vertical">
 
     <FrameLayout
@@ -211,6 +212,25 @@
         android:textSize="24sp"
         android:textStyle="bold"
         tools:text="Page 0" />
+
+    <Chronometer
+        android:id="@+id/simpleChronometer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvPageNumber"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/blue"
+        android:textSize="@dimen/text_16"
+        android:textStyle="bold" />
+
+    <com.trinhbk.lecturelivestream.customview.MovableFloatingActionButton
+        android:layout_below="@id/llMenuMore"
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|start"
+        android:layout_margin="@dimen/space_16"
+        android:src="@drawable/ic_circle_check"/>
 
     <TextureView
         android:id="@+id/textureView"

@@ -116,6 +116,10 @@ public class SettingVideoDFragment extends DialogFragment {
         });
     }
 
+    public void resumeRecord(String pathFile, String name){
+        mCallback.onDone(pathFile, bitRate, frameRate, name);
+    }
+
     public interface OnClickSettingVideo {
         void onDone(String pathVideo, int bitRate, int frameRate, String originName);
     }

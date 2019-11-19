@@ -78,9 +78,15 @@ public class RecordUtil {
             fc.close();
             deleteFile(listRecordPaths);
             Log.v(TAG, "after combine videoCombinepath = " + videoCombinePath);
+            renameFile(videoCombinePath, new File(listRecordPaths.get(0)));
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private void renameFile(StringBuilder videoCombinePath, File newName) {
+        File fileRename = new File(videoCombinePath.toString());
+        fileRename.renameTo(newName);
     }
 
     private void deleteFile(ArrayList<String> listRecordPaths) {

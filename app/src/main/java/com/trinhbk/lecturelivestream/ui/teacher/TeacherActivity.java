@@ -12,7 +12,6 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.graphics.Matrix;
 import android.graphics.PointF;
 import android.graphics.Rect;
 import android.graphics.RectF;
@@ -45,31 +44,22 @@ import android.view.MotionEvent;
 import android.view.Surface;
 import android.view.TextureView;
 import android.view.View;
-import android.view.WindowManager;
+import android.widget.Chronometer;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.VideoView;
 
-import com.camerakit.CameraKitView;
 import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
 import com.facebook.HttpMethod;
-import com.github.hiteshsondhi88.libffmpeg.ExecuteBinaryResponseHandler;
 import com.github.hiteshsondhi88.libffmpeg.FFmpeg;
 import com.github.hiteshsondhi88.libffmpeg.FFmpegLoadBinaryResponseHandler;
-import com.github.hiteshsondhi88.libffmpeg.exceptions.FFmpegCommandAlreadyRunningException;
 import com.github.hiteshsondhi88.libffmpeg.exceptions.FFmpegNotSupportedException;
 import com.google.api.client.googleapis.extensions.android.gms.auth.UserRecoverableAuthIOException;
-import com.googlecode.mp4parser.BasicContainer;
-import com.googlecode.mp4parser.authoring.Movie;
-import com.googlecode.mp4parser.authoring.Track;
-import com.googlecode.mp4parser.authoring.builder.DefaultMp4Builder;
-import com.googlecode.mp4parser.authoring.container.mp4.MovieCreator;
-import com.googlecode.mp4parser.authoring.tracks.AppendTrack;
 import com.obsez.android.lib.filechooser.ChooserDialog;
 import com.pedro.rtplibrary.rtmp.RtmpDisplay;
 import com.samsung.android.sdk.SsdkUnsupportedException;
@@ -99,18 +89,19 @@ import com.samsung.android.sdk.pen.plugin.interfaces.SpenObjectRuntimeInterface;
 import com.samsung.android.sdk.pen.settingui.SpenSettingEraserLayout;
 import com.samsung.android.sdk.pen.settingui.SpenSettingPenLayout;
 import com.samsung.android.sdk.pen.settingui.SpenSettingTextLayout;
-import com.trinhbk.lecturelivestream.MainApplication;
+import com.trinhbk.lecturelivestream.application.MainApplication;
 import com.trinhbk.lecturelivestream.R;
+import com.trinhbk.lecturelivestream.customview.MovableFloatingActionButton;
 import com.trinhbk.lecturelivestream.network.LiveSiteService;
 import com.trinhbk.lecturelivestream.network.response.FileResponse;
 import com.trinhbk.lecturelivestream.ui.BaseActivity;
 import com.trinhbk.lecturelivestream.ui.dialog.settime.SettingTimeTempBushDFragment;
 import com.trinhbk.lecturelivestream.ui.dialog.settingvideo.SettingVideoDFragment;
-import com.trinhbk.lecturelivestream.ui.home.HomeActivity;
 import com.trinhbk.lecturelivestream.utils.AppPreferences;
 import com.trinhbk.lecturelivestream.utils.Constants;
 import com.trinhbk.lecturelivestream.utils.DeviceUtil;
 import com.trinhbk.lecturelivestream.utils.RecordUtil;
+import com.trinhbk.lecturelivestream.utils.ToastUtil;
 import com.trinhbk.lecturelivestream.utils.Utilities;
 import com.trinhbk.lecturelivestream.youtube.YouTubeApi;
 import com.trinhbk.lecturelivestream.youtube.YouTubeNewSingleton;
@@ -163,7 +154,7 @@ public class TeacherActivity extends BaseActivity implements SettingVideoDFragme
     private static final SparseIntArray ORIENTATIONS = new SparseIntArray();
     private static final int CAMERA_BACK = 0;
     private static final int CAMERA_FONT = 1;
-    private static final long MIN_TIME_RECORD = 10000L;
+    private static final long MIN_TIME_RECORD = 6000L;
 
     static {
         ORIENTATIONS.append(Surface.ROTATION_0, 90);
@@ -191,6 +182,9 @@ public class TeacherActivity extends BaseActivity implements SettingVideoDFragme
     private ImageButton ibRecord;
     private ImageButton ibSave;
     private TextView tvNumberPage;
+    private Chronometer chronometer;
+    private MovableFloatingActionButton movableFloatingActionButton;
+    private LinearLayout llMenuMore;
 
     private FrameLayout penViewContainer;
     private RelativeLayout penViewLayout;
@@ -232,6 +226,8 @@ public class TeacherActivity extends BaseActivity implements SettingVideoDFragme
     private ArrayList<String> listRecordsPath = new ArrayList<>();
     private ArrayList<String> listRecordsName = new ArrayList<>();
     private int recordStatus = 0;
+    private Boolean runningChronometer = false;
+    private Long pauseOffset = 0L;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -244,6 +240,27 @@ public class TeacherActivity extends BaseActivity implements SettingVideoDFragme
         initMedia();
         initListener();
         loadFFmpegLibrary();
+    }
+
+    private void startCountUpTimer() {
+        if (!runningChronometer) {
+            chronometer.setBase(SystemClock.elapsedRealtime() - pauseOffset);
+            chronometer.start();
+            runningChronometer = true;
+        }
+    }
+
+    private void stopCountUpTimer() {
+        if (runningChronometer) {
+            chronometer.stop();
+            pauseOffset = SystemClock.elapsedRealtime() - chronometer.getBase();
+            runningChronometer = false;
+        }
+    }
+
+    private void resetCountUpTimer() {
+        chronometer.setBase(SystemClock.elapsedRealtime());
+        pauseOffset = 0L;
     }
 
     private void loadFFmpegLibrary() {
@@ -321,13 +338,15 @@ public class TeacherActivity extends BaseActivity implements SettingVideoDFragme
         ibRecord = findViewById(R.id.ibRecord);
         ibSave = findViewById(R.id.ibSave);
         tvNumberPage = findViewById(R.id.tvPageNumber);
-
         penViewContainer = findViewById(R.id.spenViewContainer);
         penViewLayout = findViewById(R.id.spenViewLayout);
         textureView = (TextureView) findViewById(R.id.textureView);
         //From Java 1.4 , you can use keyword 'assert' to check expression true or false
         assert textureView != null;
         textureView.setSurfaceTextureListener(textureListener);
+        chronometer = findViewById(R.id.simpleChronometer);
+        movableFloatingActionButton = findViewById(R.id.fab);
+        llMenuMore = findViewById(R.id.llMenuMore);
     }
 
     private void initListener() {
@@ -341,6 +360,16 @@ public class TeacherActivity extends BaseActivity implements SettingVideoDFragme
                     } else {
                         openCamera(CAMERA_BACK);
                     }
+                }
+            }
+        });
+        movableFloatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (llMenuMore.getVisibility() == View.VISIBLE) {
+                    llMenuMore.setVisibility(View.GONE);
+                } else {
+                    llMenuMore.setVisibility(View.VISIBLE);
                 }
             }
         });
@@ -601,13 +630,20 @@ public class TeacherActivity extends BaseActivity implements SettingVideoDFragme
                     closeSettingView();
 //                    Toast.makeText(TeacherActivity.this, "Video is saved", Toast.LENGTH_SHORT).show();
                     Log.v(TAG, "Stopping Recording");
+                    ToastUtil.getInstance().show(getString(R.string.teacher_save_pause));
                     stopScreenSharing();
+                    stopCountUpTimer();
                 }
             } else {
                 checkSessionRecord = true;
                 recordStatus = 1;
-                SettingVideoDFragment dialogFragment = SettingVideoDFragment.newInstance();
-                dialogFragment.show(getSupportFragmentManager(), dialogFragment.getClass().getSimpleName());
+                if (listRecordsName.size() >= 1 && listRecordsPath.size() >= 1) {
+                    onDone(RecordUtil.baseDir + "/" + listRecordsName.get(listRecordsName.size() - 1) + listRecordsName.size() + ".mp4", bitRate, frameRate, listRecordsName.get(listRecordsName.size() - 1) + listRecordsName.size());
+                    ToastUtil.getInstance().show(getString(R.string.teacher_save_resume));
+                } else {
+                    SettingVideoDFragment dialogFragment = SettingVideoDFragment.newInstance();
+                    dialogFragment.show(getSupportFragmentManager(), dialogFragment.getClass().getSimpleName());
+                }
             }
         });
 
@@ -622,7 +658,7 @@ public class TeacherActivity extends BaseActivity implements SettingVideoDFragme
                 Log.v(TAG, "Stopping Recording");
                 stopScreenSharing();
                 if (checkSessionRecord == true && listRecordsPath.size() >= 2) {
-                    RecordUtil.getInstance().appendVideo(listRecordsPath,listRecordsName);
+                    RecordUtil.getInstance().appendVideo(listRecordsPath, listRecordsName);
                 }
                 clearRecord();
             }
@@ -866,6 +902,11 @@ public class TeacherActivity extends BaseActivity implements SettingVideoDFragme
         }
     }
 
+    private void showListVideo() {
+        ToastUtil.getInstance().show(getString(R.string.teacher_save_success));
+        finish();
+    }
+
     private void initMedia() {
         rtmpDisplay = getInstance();
     }
@@ -1029,22 +1070,16 @@ public class TeacherActivity extends BaseActivity implements SettingVideoDFragme
             }
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
-//            Toast.makeText(this, "ObjectRuntimeInfo class not found.", Toast.LENGTH_SHORT).show();
         } catch (InstantiationException e) {
             e.printStackTrace();
-//            Toast.makeText(this, "Failed to access the ObjectRuntimeInfo constructor.", Toast.LENGTH_SHORT).show();
-        } catch (IllegalAccessException e) {
             e.printStackTrace();
-//            Toast.makeText(this, "Failed to access the ObjectRuntimeInfo field or method.", Toast.LENGTH_SHORT).show();
         } catch (Exception e) {
             e.printStackTrace();
-//            Toast.makeText(this, "ObjectRuntimeInfo is not loaded.", Toast.LENGTH_SHORT).show();
         }
     }
 
     private void startObjectRuntime() {
         if (mVideoRuntime == null) {
-//            Toast.makeText(this, "ObjectRuntime is not loaded \n Load Plug-in First !!", Toast.LENGTH_SHORT).show();
             return;
         }
         SpenObjectBase objectBase = null;
@@ -1524,6 +1559,12 @@ public class TeacherActivity extends BaseActivity implements SettingVideoDFragme
         protected void onPostExecute(Void aVoid) {
 //            super.onPostExecute(aVoid);
             hideLoading();
+            if (listRecordsName.size() > 1 && listRecordsPath.size() > 1) {
+                ToastUtil.getInstance().show(getString(R.string.teacher_save_resume));
+            } else {
+                ToastUtil.getInstance().show(getString(R.string.teacher_record_start));
+            }
+            startCountUpTimer();
         }
     }
 
@@ -1577,6 +1618,12 @@ public class TeacherActivity extends BaseActivity implements SettingVideoDFragme
 //            super.onPostExecute(aVoid);
             hideLoading();
             ibRecord.setImageResource(R.drawable.ic_stop);
+            if (listRecordsName.size() > 1 && listRecordsPath.size() > 1) {
+                ToastUtil.getInstance().show(getString(R.string.teacher_save_resume));
+            } else {
+                ToastUtil.getInstance().show(getString(R.string.teacher_record_start));
+            }
+            startCountUpTimer();
         }
     }
 
@@ -1708,39 +1755,6 @@ public class TeacherActivity extends BaseActivity implements SettingVideoDFragme
         mBackgroundHandler = new Handler(mBackgroundThread.getLooper());
     }
 
-    private void executeCommand(final String[] command) {
-        try {
-            fFmpeg.execute(command, new ExecuteBinaryResponseHandler() {
-                @Override
-                public void onFailure(String message) {
-                    super.onFailure(message);
-                }
-
-                @Override
-                public void onFinish() {
-                    super.onFinish();
-                }
-
-                @Override
-                public void onProgress(String message) {
-                    super.onProgress(message);
-                }
-
-                @Override
-                public void onStart() {
-                    super.onStart();
-                }
-
-                @Override
-                public void onSuccess(String message) {
-                    super.onSuccess(message);
-                }
-            });
-        } catch (FFmpegCommandAlreadyRunningException e) {
-            e.printStackTrace();
-        }
-    }
-
     @Override
     public void onBackPressed() {
         if (System.currentTimeMillis() - onTimeRecord < MIN_TIME_RECORD) {
@@ -1763,5 +1777,6 @@ public class TeacherActivity extends BaseActivity implements SettingVideoDFragme
         checkSessionRecord = false;
         listRecordsName.clear();
         listRecordsPath.clear();
+        showListVideo();
     }
 }
