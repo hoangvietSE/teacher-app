@@ -40,6 +40,7 @@ import android.util.Log;
 import android.util.Size;
 import android.util.SparseIntArray;
 import android.view.Display;
+import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.Surface;
 import android.view.TextureView;
@@ -91,10 +92,12 @@ import com.samsung.android.sdk.pen.settingui.SpenSettingPenLayout;
 import com.samsung.android.sdk.pen.settingui.SpenSettingTextLayout;
 import com.trinhbk.lecturelivestream.application.MainApplication;
 import com.trinhbk.lecturelivestream.R;
+import com.trinhbk.lecturelivestream.customview.AutoFitTextureView;
 import com.trinhbk.lecturelivestream.customview.MovableFloatingActionButton;
+import com.trinhbk.lecturelivestream.customview.SplitPaneLayout;
 import com.trinhbk.lecturelivestream.network.LiveSiteService;
 import com.trinhbk.lecturelivestream.network.response.FileResponse;
-import com.trinhbk.lecturelivestream.ui.BaseActivity;
+import com.trinhbk.lecturelivestream.ui.base.BaseActivity;
 import com.trinhbk.lecturelivestream.ui.dialog.settime.SettingTimeTempBushDFragment;
 import com.trinhbk.lecturelivestream.ui.dialog.settingvideo.SettingVideoDFragment;
 import com.trinhbk.lecturelivestream.utils.AppPreferences;
@@ -112,10 +115,13 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -149,7 +155,7 @@ public class TeacherActivity extends BaseActivity implements SettingVideoDFragme
     private static final int REQUEST_CODE_RECORD = 94;
     private static final int REQUEST_CODE_STREAM = 95;
     static final int REQUEST_CAMERA_PERMISSION = 1009;
-    private TextureView textureView;
+    private AutoFitTextureView textureView;
     //Check state orientation of output image
     private static final SparseIntArray ORIENTATIONS = new SparseIntArray();
     private static final int CAMERA_BACK = 0;
@@ -185,6 +191,8 @@ public class TeacherActivity extends BaseActivity implements SettingVideoDFragme
     private Chronometer chronometer;
     private MovableFloatingActionButton movableFloatingActionButton;
     private LinearLayout llMenuMore;
+    private SplitPaneLayout splitHorizontal;
+    private SplitPaneLayout splitVertical;
 
     private FrameLayout penViewContainer;
     private RelativeLayout penViewLayout;
@@ -232,6 +240,7 @@ public class TeacherActivity extends BaseActivity implements SettingVideoDFragme
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d("mylog", "create");
         setContentView(R.layout.activity_teacher);
         initStateCallback();
         initTextureListener();
@@ -239,7 +248,12 @@ public class TeacherActivity extends BaseActivity implements SettingVideoDFragme
         initSamSungPen();
         initMedia();
         initListener();
-        loadFFmpegLibrary();
+        getDimensionScreen();
+    }
+
+    private void getDimensionScreen() {
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
     }
 
     private void startCountUpTimer() {
@@ -261,37 +275,6 @@ public class TeacherActivity extends BaseActivity implements SettingVideoDFragme
     private void resetCountUpTimer() {
         chronometer.setBase(SystemClock.elapsedRealtime());
         pauseOffset = 0L;
-    }
-
-    private void loadFFmpegLibrary() {
-        if (fFmpeg == null) {
-            fFmpeg = FFmpeg.getInstance(this);
-            try {
-                fFmpeg.loadBinary(new FFmpegLoadBinaryResponseHandler() {
-                    @Override
-                    public void onFailure() {
-                        Log.d(TAG, "LoadLibrary: onFailure");
-                    }
-
-                    @Override
-                    public void onSuccess() {
-                        Log.d(TAG, "LoadLibrary: onSuccess");
-                    }
-
-                    @Override
-                    public void onStart() {
-
-                    }
-
-                    @Override
-                    public void onFinish() {
-
-                    }
-                });
-            } catch (FFmpegNotSupportedException e) {
-                e.printStackTrace();
-            }
-        }
     }
 
     private void initTextureListener() {
@@ -340,13 +323,15 @@ public class TeacherActivity extends BaseActivity implements SettingVideoDFragme
         tvNumberPage = findViewById(R.id.tvPageNumber);
         penViewContainer = findViewById(R.id.spenViewContainer);
         penViewLayout = findViewById(R.id.spenViewLayout);
-        textureView = (TextureView) findViewById(R.id.textureView);
+        textureView = (AutoFitTextureView) findViewById(R.id.textureView);
         //From Java 1.4 , you can use keyword 'assert' to check expression true or false
         assert textureView != null;
         textureView.setSurfaceTextureListener(textureListener);
         chronometer = findViewById(R.id.simpleChronometer);
         movableFloatingActionButton = findViewById(R.id.fab);
         llMenuMore = findViewById(R.id.llMenuMore);
+        splitHorizontal = findViewById(R.id.split_horizontal);
+        splitVertical = findViewById(R.id.split_vertical);
     }
 
     private void initListener() {
@@ -373,6 +358,23 @@ public class TeacherActivity extends BaseActivity implements SettingVideoDFragme
                 }
             }
         });
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            splitHorizontal.setOnSplitterPositionChangedListener(new SplitPaneLayout.OnSplitterPositionChangedListener() {
+                @Override
+                public void onSplitterPositionChanged(SplitPaneLayout splitPaneLayout, boolean fromUser) {
+                    textureView.setAspectRatio(textureView.getWidth(),textureView.getHeight());
+                }
+            });
+            splitVertical.setOnSplitterPositionChangedListener(new SplitPaneLayout.OnSplitterPositionChangedListener() {
+                @Override
+                public void onSplitterPositionChanged(SplitPaneLayout splitPaneLayout, boolean fromUser) {
+                    textureView.setAspectRatio(textureView.getWidth(),textureView.getHeight());
+                }
+            });
+        } else {
+
+        }
+
     }
 
     private void initSamSungPen() {
@@ -1723,6 +1725,7 @@ public class TeacherActivity extends BaseActivity implements SettingVideoDFragme
     @Override
     protected void onResume() {
         super.onResume();
+        Log.d("mylog", "resume");
         startBackgroundThread();
         if (textureView.isAvailable()) {
             DeviceUtil.getInstance().transformImage(TeacherActivity.this, textureView, textureView.getWidth(), textureView.getHeight());
@@ -1772,11 +1775,27 @@ public class TeacherActivity extends BaseActivity implements SettingVideoDFragme
         }
     }
 
+    private void updateTextureViewScaling(int viewWidth, int viewHeight) {
+        textureView.setLayoutParams(new FrameLayout.LayoutParams(viewWidth, viewHeight));
+    }
+
     private void clearRecord() {
         recordStatus = 0;
         checkSessionRecord = false;
         listRecordsName.clear();
         listRecordsPath.clear();
         showListVideo();
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        Log.d("mylog", "restart");
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.d("mylog", "stop");
     }
 }

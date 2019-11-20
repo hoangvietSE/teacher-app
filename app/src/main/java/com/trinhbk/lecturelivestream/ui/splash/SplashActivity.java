@@ -7,7 +7,7 @@ import android.os.Handler;
 import android.support.annotation.Nullable;
 
 import com.trinhbk.lecturelivestream.R;
-import com.trinhbk.lecturelivestream.ui.BaseActivity;
+import com.trinhbk.lecturelivestream.ui.base.BaseActivity;
 import com.trinhbk.lecturelivestream.ui.home.HomeActivity;
 import com.trinhbk.lecturelivestream.utils.NetworkUtil;
 

@@ -1,4 +1,4 @@
-package com.trinhbk.lecturelivestream.ui;
+package com.trinhbk.lecturelivestream.ui.base;
 
 import android.content.Intent;
 import android.os.AsyncTask;

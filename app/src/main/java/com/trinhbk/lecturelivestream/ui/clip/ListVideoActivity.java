@@ -15,7 +15,7 @@ import android.view.View;
 import com.trinhbk.lecturelivestream.R;
 import com.trinhbk.lecturelivestream.adapter.VideoAdapter;
 import com.trinhbk.lecturelivestream.model.Video;
-import com.trinhbk.lecturelivestream.ui.BaseActivity;
+import com.trinhbk.lecturelivestream.ui.base.BaseActivity;
 import com.trinhbk.lecturelivestream.ui.teacher.TeacherActivity;
 import com.trinhbk.lecturelivestream.ui.trimmer.EditVideoActivity;
 import com.trinhbk.lecturelivestream.utils.Constants;
