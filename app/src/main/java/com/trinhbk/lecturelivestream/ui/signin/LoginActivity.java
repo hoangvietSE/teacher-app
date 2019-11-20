@@ -26,7 +26,7 @@ import com.google.android.gms.common.api.Scope;
 import com.google.android.gms.tasks.Task;
 import com.google.api.services.youtube.YouTubeScopes;
 import com.trinhbk.lecturelivestream.R;
-import com.trinhbk.lecturelivestream.ui.BaseActivity;
+import com.trinhbk.lecturelivestream.ui.base.BaseActivity;
 import com.trinhbk.lecturelivestream.utils.AppPreferences;
 import com.trinhbk.lecturelivestream.utils.Constants;
 

@@ -22,7 +22,7 @@ import com.google.api.client.googleapis.extensions.android.gms.auth.UserRecovera
 import com.google.api.services.youtube.YouTube;
 import com.squareup.picasso.Picasso;
 import com.trinhbk.lecturelivestream.R;
-import com.trinhbk.lecturelivestream.ui.BaseActivity;
+import com.trinhbk.lecturelivestream.ui.base.BaseActivity;
 import com.trinhbk.lecturelivestream.ui.clip.ListVideoActivity;
 import com.trinhbk.lecturelivestream.ui.signin.LoginActivity;
 import com.trinhbk.lecturelivestream.ui.teacher.TeacherActivity;
@@ -39,12 +39,9 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.Date;
-import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-
-import static com.trinhbk.lecturelivestream.utils.Constants.IntentKey.ACCOUNT;
 
 /**
  * Created by TrinhBK on 8/29/2018.
@@ -263,8 +260,10 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
                                                 Log.d(TAG, "onCompleted: " + responseStream);
                                                 try {
                                                     JSONObject dataStream = responseStream.getJSONObject();
-                                                    if (dataStream.has("stream_url")) {
-                                                        AppPreferences.INSTANCE.setKeyString(Constants.KeyPreference.RTMP_FACEBOOK, dataStream.getString("stream_url"));
+                                                    if(dataStream!=null) {
+                                                        if (dataStream.has("stream_url")) {
+                                                            AppPreferences.INSTANCE.setKeyString(Constants.KeyPreference.RTMP_FACEBOOK, dataStream.getString("stream_url"));
+                                                        }
                                                     }
                                                 } catch (JSONException e) {
                                                     e.printStackTrace();

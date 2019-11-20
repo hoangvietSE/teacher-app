@@ -26,4 +26,5 @@
     <dimen name="text_24">24sp</dimen> <!-- Leading 32pt -->
     <dimen name="text_34">34sp</dimen> <!-- Leading 40pt -->
     <dimen name="text_45">45sp</dimen> <!-- Leading 48pt -->
+    <dimen name="spl_default_splitter_size">8dp</dimen>
 </resources>
