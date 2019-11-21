@@ -265,7 +265,7 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
                                                             AppPreferences.INSTANCE.setKeyString(Constants.KeyPreference.RTMP_FACEBOOK, dataStream.getString("stream_url"));
                                                         }
                                                     }
-                                                } catch (JSONException e) {
+                                                } catch (Exception e) {
                                                     e.printStackTrace();
                                                 }
                                             }

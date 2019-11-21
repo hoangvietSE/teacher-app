@@ -943,6 +943,7 @@ public class TeacherActivity extends BaseActivity implements SettingVideoDFragme
         runOnUiThread(() -> {
             hideLoading();
             Toast.makeText(TeacherActivity.this, "Hủy kết nối", Toast.LENGTH_SHORT).show();
+            finish();
         });
     }
 
