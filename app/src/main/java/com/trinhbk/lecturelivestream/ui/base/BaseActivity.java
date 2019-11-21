@@ -10,10 +10,6 @@ import com.trinhbk.lecturelivestream.R;
 import com.trinhbk.lecturelivestream.ui.teacher.TeacherActivity;
 import com.trinhbk.lecturelivestream.widget.LoadingDialog;
 
-/**
- * Created by TrinhBK on 8/29/2018.
- */
-
 public class BaseActivity extends AppCompatActivity {
 
     public static final long MIN_CLICK_INTERVAL = 1000L;

@@ -40,7 +40,6 @@ import android.util.Log;
 import android.util.Size;
 import android.util.SparseIntArray;
 import android.view.Display;
-import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.Surface;
 import android.view.TextureView;
@@ -58,8 +57,6 @@ import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
 import com.facebook.HttpMethod;
 import com.github.hiteshsondhi88.libffmpeg.FFmpeg;
-import com.github.hiteshsondhi88.libffmpeg.FFmpegLoadBinaryResponseHandler;
-import com.github.hiteshsondhi88.libffmpeg.exceptions.FFmpegNotSupportedException;
 import com.google.api.client.googleapis.extensions.android.gms.auth.UserRecoverableAuthIOException;
 import com.obsez.android.lib.filechooser.ChooserDialog;
 import com.pedro.rtplibrary.rtmp.RtmpDisplay;
@@ -115,13 +112,10 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -130,16 +124,10 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-/**
- * Created by TrinhBK on 8/29/2018.
- */
-
 public class TeacherActivity extends BaseActivity implements SettingVideoDFragment.OnClickSettingVideo, ConnectCheckerRtmp, SettingTimeTempBushDFragment.OnClickSettingTime {
 
     private static final String TAG = TeacherActivity.class.getSimpleName();
-
     private LiveSiteService liveSiteService = MainApplication.getLiveSiteService();
-
     private final int MODE_PEN = 0;
     private final int MODE_IMG_OBJ = 1;
     private final int MODE_TEXT_OBJ = 2;
@@ -147,7 +135,6 @@ public class TeacherActivity extends BaseActivity implements SettingVideoDFragme
     private int mToolType = SpenSurfaceView.TOOL_SPEN;
     private final int CONTEXT_MENU_RUN_ID = 0;
     private long onTimeRecord = -1;
-
     private static final int DISPLAY_WIDTH = 1920;
     private static final int DISPLAY_HEIGHT = 1080;
     private static final int REQUEST_CODE_SELECT_IMAGE_BACKGROUND = 99;
@@ -170,7 +157,6 @@ public class TeacherActivity extends BaseActivity implements SettingVideoDFragme
     }
 
     private Handler mStrokeHandler;
-
     private ImageButton ibBrush;
     private ImageButton ibTempBrush;
     private ImageButton ibEraser;
@@ -192,10 +178,8 @@ public class TeacherActivity extends BaseActivity implements SettingVideoDFragme
     private MovableFloatingActionButton movableFloatingActionButton;
     private LinearLayout llMenuMore;
     private SplitPaneLayout splitHorizontal;
-
     private FrameLayout penViewContainer;
     private RelativeLayout penViewLayout;
-
     private SpenNoteDoc mPenNoteDoc;
     private SpenPageDoc mPenPageDoc;
     private SpenSurfaceView mPenSurfaceView;
@@ -203,7 +187,6 @@ public class TeacherActivity extends BaseActivity implements SettingVideoDFragme
     @SuppressWarnings("deprecation")
     private SpenSettingEraserLayout mEraserSettingView;
     private SpenSettingTextLayout mTextSettingView;
-
     private SpenObjectRuntimeManager mSpenObjectRuntimeManager;
     private List<SpenObjectRuntimeInfo> mSpenObjectRuntimeInfoList;
     private SpenObjectRuntimeInfo mObjectRuntimeInfo;
@@ -240,7 +223,6 @@ public class TeacherActivity extends BaseActivity implements SettingVideoDFragme
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d("mylog", "create");
         setContentView(R.layout.activity_teacher);
         initStateCallback();
         initTextureListener();
@@ -248,12 +230,6 @@ public class TeacherActivity extends BaseActivity implements SettingVideoDFragme
         initSamSungPen();
         initMedia();
         initListener();
-        getDimensionScreen();
-    }
-
-    private void getDimensionScreen() {
-        DisplayMetrics displayMetrics = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
     }
 
     private void startCountUpTimer() {
@@ -362,13 +338,12 @@ public class TeacherActivity extends BaseActivity implements SettingVideoDFragme
             splitHorizontal.setOnSplitterPositionChangedListener(new SplitPaneLayout.OnSplitterPositionChangedListener() {
                 @Override
                 public void onSplitterPositionChanged(SplitPaneLayout splitPaneLayout, boolean fromUser) {
-                    textureView.setAspectRatio(textureView.getWidth(),textureView.getHeight());
+                    textureView.setAspectRatio(textureView.getWidth(), textureView.getHeight());
                 }
             });
         } else {
             //ORIENTATION_PORTRAIT
         }
-
     }
 
     private void initSamSungPen() {
@@ -951,7 +926,6 @@ public class TeacherActivity extends BaseActivity implements SettingVideoDFragme
     public void onAuthErrorRtmp() {
         runOnUiThread(() -> {
             hideLoading();
-//            Toast.makeText(TeacherActivity.this, "Auth error", Toast.LENGTH_SHORT).show();
         });
     }
 
@@ -1435,17 +1409,7 @@ public class TeacherActivity extends BaseActivity implements SettingVideoDFragme
     }
 
     private String getRealPathFromURI(Uri contentURI) {
-        String[] filePathColumn = {MediaStore.Images.Media.DATA};
-        // Get the cursor
-        Cursor cursor = getContentResolver().query(contentURI, filePathColumn, null, null, null);
-        // Move to first row
-        cursor.moveToFirst();
-        //Get the column index of MediaStore.Images.Media.DATA
-        int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-        //Gets the String value in the column
-        String imgDecodableString = cursor.getString(columnIndex);
-        cursor.close();
-        return imgDecodableString;
+        return DeviceUtil.getInstance().getRealPathFromURI(this, contentURI);
     }
 
     @Override
@@ -1454,7 +1418,6 @@ public class TeacherActivity extends BaseActivity implements SettingVideoDFragme
         if (resultCode == RESULT_OK) {
             mAccount = AppPreferences.INSTANCE.getKeyString(Constants.KeyPreference.ACCOUNT_NAME);
             if (data == null) {
-//                Toast.makeText(this, "Cannot find the image", Toast.LENGTH_SHORT).show();
                 return;
             }
             // Process image request for the background.
@@ -1656,20 +1619,16 @@ public class TeacherActivity extends BaseActivity implements SettingVideoDFragme
     protected void onDestroy() {
         super.onDestroy();
         //   prevent memory leaks when you application closes.
-
         if (mPenSettingView != null) {
             mPenSettingView.close();
         }
-
         if (mStrokeHandler != null) {
             mStrokeHandler.removeCallbacks(mStrokeRunnable);
             mStrokeHandler = null;
         }
-
         if (mEraserSettingView != null) {
             mEraserSettingView.close();
         }
-
         if (mSpenObjectRuntimeManager != null) {
             if (mVideoRuntime != null) {
                 mVideoRuntime.stop(true);
@@ -1677,22 +1636,17 @@ public class TeacherActivity extends BaseActivity implements SettingVideoDFragme
             }
             mSpenObjectRuntimeManager.close();
         }
-
         if (mPenPageDoc.isRecording()) {
             mPenPageDoc.stopRecord();
         }
-
         if (mPenSurfaceView.getReplayState() == SpenSurfaceView.REPLAY_STATE_PLAYING) {
             mPenSurfaceView.stopReplay();
         }
-
         if (mTextSettingView != null) {
             mTextSettingView.close();
         }
         //  Close the text control
         mPenSurfaceView.closeControl();
-
-
         if (mPenSurfaceView != null) {
             mPenSurfaceView.close();
             mPenSurfaceView = null;
@@ -1720,7 +1674,6 @@ public class TeacherActivity extends BaseActivity implements SettingVideoDFragme
     @Override
     protected void onResume() {
         super.onResume();
-        Log.d("mylog", "resume");
         startBackgroundThread();
         if (textureView.isAvailable()) {
             DeviceUtil.getInstance().transformImage(TeacherActivity.this, textureView, textureView.getWidth(), textureView.getHeight());
@@ -1770,27 +1723,11 @@ public class TeacherActivity extends BaseActivity implements SettingVideoDFragme
         }
     }
 
-    private void updateTextureViewScaling(int viewWidth, int viewHeight) {
-        textureView.setLayoutParams(new FrameLayout.LayoutParams(viewWidth, viewHeight));
-    }
-
     private void clearRecord() {
         recordStatus = 0;
         checkSessionRecord = false;
         listRecordsName.clear();
         listRecordsPath.clear();
         showListVideo();
-    }
-
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-        Log.d("mylog", "restart");
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        Log.d("mylog", "stop");
     }
 }

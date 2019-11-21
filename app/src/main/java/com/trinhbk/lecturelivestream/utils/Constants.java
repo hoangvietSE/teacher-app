@@ -2,9 +2,6 @@ package com.trinhbk.lecturelivestream.utils;
 
 import android.os.Environment;
 
-/**
- * Created by TrinhBK on 8/29/2018.
- */
 
 public class Constants {
 
