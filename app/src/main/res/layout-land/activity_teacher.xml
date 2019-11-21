@@ -15,35 +15,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <com.trinhbk.lecturelivestream.customview.SplitPaneLayout
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/split_vertical"
-            spl:orientation="vertical"
-            spl:paneSizeMin="48dip"
-            spl:splitterBackground="@drawable/splitter_bg_v"
-            spl:splitterDraggingBackground="#88000000"
-            spl:splitterPosition="80%"
-            spl:splitterSize="8dip">
+            android:layout_height="match_parent">
 
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-                <com.trinhbk.lecturelivestream.customview.AutoFitTextureView
-                    android:id="@+id/textureView"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-            </FrameLayout>
-
-
-
-            <TextView
-                android:id="@+id/second_2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/white_dark" />
-
-        </com.trinhbk.lecturelivestream.customview.SplitPaneLayout>
+            <com.trinhbk.lecturelivestream.customview.AutoFitTextureView
+                android:id="@+id/textureView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </FrameLayout>
     </RelativeLayout>
 
     <RelativeLayout

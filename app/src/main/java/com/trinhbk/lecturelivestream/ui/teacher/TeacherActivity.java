@@ -192,7 +192,6 @@ public class TeacherActivity extends BaseActivity implements SettingVideoDFragme
     private MovableFloatingActionButton movableFloatingActionButton;
     private LinearLayout llMenuMore;
     private SplitPaneLayout splitHorizontal;
-    private SplitPaneLayout splitVertical;
 
     private FrameLayout penViewContainer;
     private RelativeLayout penViewLayout;
@@ -236,6 +235,7 @@ public class TeacherActivity extends BaseActivity implements SettingVideoDFragme
     private int recordStatus = 0;
     private Boolean runningChronometer = false;
     private Long pauseOffset = 0L;
+    private Intent startIntent;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -331,7 +331,7 @@ public class TeacherActivity extends BaseActivity implements SettingVideoDFragme
         movableFloatingActionButton = findViewById(R.id.fab);
         llMenuMore = findViewById(R.id.llMenuMore);
         splitHorizontal = findViewById(R.id.split_horizontal);
-        splitVertical = findViewById(R.id.split_vertical);
+        startIntent = getIntent();
     }
 
     private void initListener() {
@@ -365,14 +365,8 @@ public class TeacherActivity extends BaseActivity implements SettingVideoDFragme
                     textureView.setAspectRatio(textureView.getWidth(),textureView.getHeight());
                 }
             });
-            splitVertical.setOnSplitterPositionChangedListener(new SplitPaneLayout.OnSplitterPositionChangedListener() {
-                @Override
-                public void onSplitterPositionChanged(SplitPaneLayout splitPaneLayout, boolean fromUser) {
-                    textureView.setAspectRatio(textureView.getWidth(),textureView.getHeight());
-                }
-            });
         } else {
-
+            //ORIENTATION_PORTRAIT
         }
 
     }
@@ -925,13 +919,13 @@ public class TeacherActivity extends BaseActivity implements SettingVideoDFragme
     public void onConnectionSuccessRtmp() {
         runOnUiThread(() -> {
             hideLoading();
-            Toast.makeText(TeacherActivity.this, "Connection success", Toast.LENGTH_SHORT).show();
+            Toast.makeText(TeacherActivity.this, "Kết nối thành công", Toast.LENGTH_SHORT).show();
             try {
                 rtmpDisplay.startRecord(pathVideo);
                 ibRecord.setImageResource(R.drawable.ic_stop);
-            } catch (IOException e) {
+            } catch (Exception e) {
                 rtmpDisplay.stopRecord();
-                Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Có lỗi xảy ra. Vui lòng thử lại!", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -940,7 +934,7 @@ public class TeacherActivity extends BaseActivity implements SettingVideoDFragme
     public void onConnectionFailedRtmp(String reason) {
         runOnUiThread(() -> {
             hideLoading();
-            Toast.makeText(TeacherActivity.this, "Connection failed. " + reason, Toast.LENGTH_SHORT).show();
+            Toast.makeText(TeacherActivity.this, "Có lỗi xảy ra. Vui lòng thử lại!" + reason, Toast.LENGTH_SHORT).show();
         });
     }
 
@@ -948,7 +942,7 @@ public class TeacherActivity extends BaseActivity implements SettingVideoDFragme
     public void onDisconnectRtmp() {
         runOnUiThread(() -> {
             hideLoading();
-            Toast.makeText(TeacherActivity.this, "Disconnected", Toast.LENGTH_SHORT).show();
+            Toast.makeText(TeacherActivity.this, "Hủy kết nối", Toast.LENGTH_SHORT).show();
         });
     }
 
