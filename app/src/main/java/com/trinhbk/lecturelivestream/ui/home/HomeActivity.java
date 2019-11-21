@@ -43,10 +43,6 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-/**
- * Created by TrinhBK on 8/29/2018.
- */
-
 public class HomeActivity extends BaseActivity implements View.OnClickListener {
 
     public static final String TAG = HomeActivity.class.getSimpleName();

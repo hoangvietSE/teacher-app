@@ -32,10 +32,6 @@ import com.trinhbk.lecturelivestream.utils.Constants;
 
 import java.util.Arrays;
 
-/**
- * Created by TrinhBK on 8/29/2018.
- */
-
 public class LoginActivity extends BaseActivity implements View.OnClickListener, GoogleApiClient.OnConnectionFailedListener {
 
     public static final String TAG = LoginActivity.class.getSimpleName();
