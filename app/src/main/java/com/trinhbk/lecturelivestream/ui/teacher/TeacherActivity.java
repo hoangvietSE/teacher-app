@@ -345,12 +345,6 @@ public class TeacherActivity extends BaseActivity implements SettingVideoDFragme
             }
         });
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            splitHorizontal.setOnSplitterPositionChangedListener(new SplitPaneLayout.OnSplitterPositionChangedListener() {
-                @Override
-                public void onSplitterPositionChanged(SplitPaneLayout splitPaneLayout, boolean fromUser) {
-                    textureView.setAspectRatio(textureView.getWidth(), textureView.getHeight());
-                }
-            });
         } else {
             //ORIENTATION_PORTRAIT
         }
