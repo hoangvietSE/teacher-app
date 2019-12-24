@@ -124,7 +124,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class TeacherActivity extends BaseActivity implements SettingVideoDFragment.OnClickSettingVideo, ConnectCheckerRtmp, SettingTimeTempBushDFragment.OnClickSettingTime {
+public class TeacherActivity extends BaseActivity implements SettingVideoDFragment.OnClickSettingVideo, ConnectCheckerRtmp, SettingTimeTempBushDFragment.OnClickSettingTime, View.OnTouchListener {
 
     private static final String TAG = TeacherActivity.class.getSimpleName();
     private LiveSiteService liveSiteService = MainApplication.getLiveSiteService();
@@ -218,7 +218,11 @@ public class TeacherActivity extends BaseActivity implements SettingVideoDFragme
     private int recordStatus = 0;
     private Boolean runningChronometer = false;
     private Long pauseOffset = 0L;
-    private Intent startIntent;
+    private int screenHight;
+    private int screenWidth;
+    private int lastAction;
+    private float dX;
+    private float dY;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -229,7 +233,15 @@ public class TeacherActivity extends BaseActivity implements SettingVideoDFragme
         initViews();
         initSamSungPen();
         initMedia();
+        initOnTouch();
         initListener();
+    }
+
+    private void initOnTouch() {
+        DisplayMetrics displaymetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
+        screenHight = displaymetrics.heightPixels;
+        screenWidth = displaymetrics.widthPixels;
     }
 
     private void startCountUpTimer() {
@@ -306,24 +318,22 @@ public class TeacherActivity extends BaseActivity implements SettingVideoDFragme
         chronometer = findViewById(R.id.simpleChronometer);
         movableFloatingActionButton = findViewById(R.id.fab);
         llMenuMore = findViewById(R.id.llMenuMore);
-        splitHorizontal = findViewById(R.id.split_horizontal);
-        startIntent = getIntent();
     }
 
     private void initListener() {
-        textureView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (!avoidDoubleClick()) {
-                    cameraDevice.close();
-                    if (cameraId.equals(String.valueOf(CAMERA_BACK))) {
-                        openCamera(CAMERA_FONT);
-                    } else {
-                        openCamera(CAMERA_BACK);
-                    }
-                }
-            }
-        });
+//        textureView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                if (!avoidDoubleClick()) {
+//                    cameraDevice.close();
+//                    if (cameraId.equals(String.valueOf(CAMERA_BACK))) {
+//                        openCamera(CAMERA_FONT);
+//                    } else {
+//                        openCamera(CAMERA_BACK);
+//                    }
+//                }
+//            }
+//        });
         movableFloatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -344,6 +354,7 @@ public class TeacherActivity extends BaseActivity implements SettingVideoDFragme
         } else {
             //ORIENTATION_PORTRAIT
         }
+        textureView.setOnTouchListener(this);
     }
 
     private void initSamSungPen() {
@@ -735,6 +746,36 @@ public class TeacherActivity extends BaseActivity implements SettingVideoDFragme
     public void onDoneSetTime(String time) {
         isShowSetTime = true;
         mPenSurfaceView.setTouchListener(touchListenerTemporaryBrush());
+    }
+
+    @Override
+    public boolean onTouch(View view, MotionEvent motionEvent) {
+        float newX, newY;
+        switch (motionEvent.getActionMasked()) {
+            case MotionEvent.ACTION_DOWN:
+                dX = view.getX() - motionEvent.getRawX();
+                dY = view.getY() - motionEvent.getRawY();
+                lastAction = MotionEvent.ACTION_DOWN;
+                break;
+            case MotionEvent.ACTION_MOVE:
+                newX = motionEvent.getRawX() + dX;
+                newY = motionEvent.getRawY() + dY;
+                // check if the view out of screen
+                if ((newX <= 0 || newX >= screenWidth - view.getWidth()) || (newY <= 0 || newY >= screenHight - view.getHeight())) {
+                    lastAction = MotionEvent.ACTION_MOVE;
+                    break;
+                }
+                view.setX(newX);
+                view.setY(newY);
+                lastAction = MotionEvent.ACTION_MOVE;
+                break;
+            case MotionEvent.ACTION_UP:
+                if (lastAction == MotionEvent.ACTION_DOWN)
+                break;
+            default:
+                return false;
+        }
+        return true;
     }
 
     private class SlowAsyncTask extends AsyncTask<Response<FileResponse>, Void, Void> {
