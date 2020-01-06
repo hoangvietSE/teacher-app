@@ -31,7 +31,6 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.SystemClock;
-import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -87,8 +86,8 @@ import com.samsung.android.sdk.pen.plugin.interfaces.SpenObjectRuntimeInterface;
 import com.samsung.android.sdk.pen.settingui.SpenSettingEraserLayout;
 import com.samsung.android.sdk.pen.settingui.SpenSettingPenLayout;
 import com.samsung.android.sdk.pen.settingui.SpenSettingTextLayout;
-import com.trinhbk.lecturelivestream.application.MainApplication;
 import com.trinhbk.lecturelivestream.R;
+import com.trinhbk.lecturelivestream.application.MainApplication;
 import com.trinhbk.lecturelivestream.customview.AutoFitTextureView;
 import com.trinhbk.lecturelivestream.customview.MovableFloatingActionButton;
 import com.trinhbk.lecturelivestream.customview.SplitPaneLayout;
@@ -347,8 +346,8 @@ public class TeacherActivity extends BaseActivity implements SettingVideoDFragme
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
         } else {
             //ORIENTATION_PORTRAIT
+            textureView.setOnTouchListener(this);
         }
-        textureView.setOnTouchListener(this);
     }
 
     private void initSamSungPen() {
@@ -765,7 +764,7 @@ public class TeacherActivity extends BaseActivity implements SettingVideoDFragme
                 break;
             case MotionEvent.ACTION_UP:
                 if (lastAction == MotionEvent.ACTION_DOWN)
-                break;
+                    break;
             default:
                 return false;
         }
