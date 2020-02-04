@@ -2,10 +2,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="horizontal"
-    android:weightSum="2">
+    android:animateLayoutChanges="true"
+    android:orientation="horizontal">
 
     <RelativeLayout
+        android:id="@+id/rl_camera"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
@@ -244,13 +245,22 @@
             android:textStyle="bold" />
 
         <com.trinhbk.lecturelivestream.customview.MovableFloatingActionButton
-            android:id="@+id/fab"
+            android:id="@+id/mfa_top_down"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/llMenuMore"
             android:layout_gravity="top|start"
             android:layout_margin="@dimen/space_16"
-            android:src="@drawable/ic_circle_check" />
+            android:src="@drawable/ic_top_down" />
+
+        <com.trinhbk.lecturelivestream.customview.MovableFloatingActionButton
+            android:id="@+id/mfa_left_right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/mfa_top_down"
+            android:layout_gravity="top|start"
+            android:layout_marginLeft="@dimen/space_16"
+            android:src="@drawable/ic_left_right" />
 
     </RelativeLayout>
 </LinearLayout>

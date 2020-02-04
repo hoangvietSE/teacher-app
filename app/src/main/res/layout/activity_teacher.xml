@@ -223,13 +223,13 @@
         android:textStyle="bold" />
 
     <com.trinhbk.lecturelivestream.customview.MovableFloatingActionButton
-        android:id="@+id/fab"
+        android:id="@+id/mfa_top_down"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/llMenuMore"
         android:layout_gravity="top|start"
         android:layout_margin="@dimen/space_16"
-        android:src="@drawable/ic_circle_check" />
+        android:src="@drawable/ic_top_down" />
 
     <com.trinhbk.lecturelivestream.customview.AutoFitTextureView
         android:id="@+id/textureView"

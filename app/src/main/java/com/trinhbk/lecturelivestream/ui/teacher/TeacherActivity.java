@@ -174,7 +174,9 @@ public class TeacherActivity extends BaseActivity implements SettingVideoDFragme
     private ImageButton ibSave;
     private TextView tvNumberPage;
     private Chronometer chronometer;
-    private MovableFloatingActionButton movableFloatingActionButton;
+    private MovableFloatingActionButton movableFloatingActionButtonTopDown;
+    private MovableFloatingActionButton movableFloatingActionButtonLeftRight;
+    private RelativeLayout relativeLayoutCamera;
     private LinearLayout llMenuMore;
     private SplitPaneLayout splitHorizontal;
     private FrameLayout penViewContainer;
@@ -315,7 +317,7 @@ public class TeacherActivity extends BaseActivity implements SettingVideoDFragme
         assert textureView != null;
         textureView.setSurfaceTextureListener(textureListener);
         chronometer = findViewById(R.id.simpleChronometer);
-        movableFloatingActionButton = findViewById(R.id.fab);
+        movableFloatingActionButtonTopDown = findViewById(R.id.mfa_top_down);
         llMenuMore = findViewById(R.id.llMenuMore);
     }
 
@@ -333,17 +335,23 @@ public class TeacherActivity extends BaseActivity implements SettingVideoDFragme
 //                }
 //            }
 //        });
-        movableFloatingActionButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (llMenuMore.getVisibility() == View.VISIBLE) {
-                    llMenuMore.setVisibility(View.GONE);
-                } else {
-                    llMenuMore.setVisibility(View.VISIBLE);
-                }
+        movableFloatingActionButtonTopDown.setOnClickListener(view -> {
+            if (llMenuMore.getVisibility() == View.VISIBLE) {
+                llMenuMore.setVisibility(View.GONE);
+            } else {
+                llMenuMore.setVisibility(View.VISIBLE);
             }
         });
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            movableFloatingActionButtonLeftRight = findViewById(R.id.mfa_left_right);
+            relativeLayoutCamera = findViewById(R.id.rl_camera);
+            movableFloatingActionButtonLeftRight.setOnClickListener(view -> {
+                if (relativeLayoutCamera.getVisibility() == View.VISIBLE) {
+                    relativeLayoutCamera.setVisibility(View.GONE);
+                } else {
+                    relativeLayoutCamera.setVisibility(View.VISIBLE);
+                }
+            });
         } else {
             //ORIENTATION_PORTRAIT
             textureView.setOnTouchListener(this);
