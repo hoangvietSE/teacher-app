@@ -31,7 +31,6 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.SystemClock;
-import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -87,8 +86,8 @@ import com.samsung.android.sdk.pen.plugin.interfaces.SpenObjectRuntimeInterface;
 import com.samsung.android.sdk.pen.settingui.SpenSettingEraserLayout;
 import com.samsung.android.sdk.pen.settingui.SpenSettingPenLayout;
 import com.samsung.android.sdk.pen.settingui.SpenSettingTextLayout;
-import com.trinhbk.lecturelivestream.application.MainApplication;
 import com.trinhbk.lecturelivestream.R;
+import com.trinhbk.lecturelivestream.application.MainApplication;
 import com.trinhbk.lecturelivestream.customview.AutoFitTextureView;
 import com.trinhbk.lecturelivestream.customview.MovableFloatingActionButton;
 import com.trinhbk.lecturelivestream.customview.SplitPaneLayout;
@@ -175,7 +174,9 @@ public class TeacherActivity extends BaseActivity implements SettingVideoDFragme
     private ImageButton ibSave;
     private TextView tvNumberPage;
     private Chronometer chronometer;
-    private MovableFloatingActionButton movableFloatingActionButton;
+    private MovableFloatingActionButton movableFloatingActionButtonTopDown;
+    private MovableFloatingActionButton movableFloatingActionButtonLeftRight;
+    private RelativeLayout relativeLayoutCamera;
     private LinearLayout llMenuMore;
     private SplitPaneLayout splitHorizontal;
     private FrameLayout penViewContainer;
@@ -316,7 +317,7 @@ public class TeacherActivity extends BaseActivity implements SettingVideoDFragme
         assert textureView != null;
         textureView.setSurfaceTextureListener(textureListener);
         chronometer = findViewById(R.id.simpleChronometer);
-        movableFloatingActionButton = findViewById(R.id.fab);
+        movableFloatingActionButtonTopDown = findViewById(R.id.mfa_top_down);
         llMenuMore = findViewById(R.id.llMenuMore);
     }
 
@@ -334,27 +335,27 @@ public class TeacherActivity extends BaseActivity implements SettingVideoDFragme
 //                }
 //            }
 //        });
-        movableFloatingActionButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (llMenuMore.getVisibility() == View.VISIBLE) {
-                    llMenuMore.setVisibility(View.GONE);
-                } else {
-                    llMenuMore.setVisibility(View.VISIBLE);
-                }
+        movableFloatingActionButtonTopDown.setOnClickListener(view -> {
+            if (llMenuMore.getVisibility() == View.VISIBLE) {
+                llMenuMore.setVisibility(View.GONE);
+            } else {
+                llMenuMore.setVisibility(View.VISIBLE);
             }
         });
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            splitHorizontal.setOnSplitterPositionChangedListener(new SplitPaneLayout.OnSplitterPositionChangedListener() {
-                @Override
-                public void onSplitterPositionChanged(SplitPaneLayout splitPaneLayout, boolean fromUser) {
-                    textureView.setAspectRatio(textureView.getWidth(), textureView.getHeight());
+            movableFloatingActionButtonLeftRight = findViewById(R.id.mfa_left_right);
+            relativeLayoutCamera = findViewById(R.id.rl_camera);
+            movableFloatingActionButtonLeftRight.setOnClickListener(view -> {
+                if (relativeLayoutCamera.getVisibility() == View.VISIBLE) {
+                    relativeLayoutCamera.setVisibility(View.GONE);
+                } else {
+                    relativeLayoutCamera.setVisibility(View.VISIBLE);
                 }
             });
         } else {
             //ORIENTATION_PORTRAIT
+            textureView.setOnTouchListener(this);
         }
-        textureView.setOnTouchListener(this);
     }
 
     private void initSamSungPen() {
@@ -771,7 +772,7 @@ public class TeacherActivity extends BaseActivity implements SettingVideoDFragme
                 break;
             case MotionEvent.ACTION_UP:
                 if (lastAction == MotionEvent.ACTION_DOWN)
-                break;
+                    break;
             default:
                 return false;
         }
