@@ -3,6 +3,7 @@ package com.trinhbk.lecturelivestream.application;
 import android.app.Application;
 import android.content.Context;
 
+import com.deploygate.sdk.DeployGate;
 import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.pedro.rtsp.utils.TLSSocketFactory;
 import com.trinhbk.lecturelivestream.network.LiveSiteService;
@@ -47,9 +48,13 @@ public class MainApplication extends Application {
             initOkHttpClient();
         } catch (NoSuchAlgorithmException | KeyManagementException | KeyStoreException e) {
             e.printStackTrace();
-            //TODO: handle
         }
         initLiveSite();
+        initDeploydate();
+    }
+
+    private void initDeploydate() {
+        DeployGate.install(this);
     }
 
     private void initOkHttpClient() throws NoSuchAlgorithmException, KeyManagementException, KeyStoreException {
