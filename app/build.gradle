@@ -135,6 +135,8 @@ dependencies {
     implementation 'com.writingminds:FFmpegAndroid:0.3.2'
     implementation 'life.knowledge4:k4l-video-trimmer:1.0'
     implementation 'com.deploygate:sdk:4.2.0'
+    implementation 'com.github.barteksc:android-pdf-viewer:2.8.2'
+    implementation 'com.github.kk121:File-Loader:1.2'
 
     //    implementation 'com.google.apis:google-api-services-calendar:v3-rev260-1.23.0' exclude module: 'httpclient'
     //    implementation 'com.google.api-client:google-api-client-android:1.25.0' exclude module: 'httpclient'
