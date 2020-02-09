@@ -43,5 +43,8 @@
     <string name="teacher_record_start">Bắt đầu bài giảng</string>
     <string name="teacher_save_pause">Tạm dừng bài giảng</string>
     <string name="teacher_save_resume">Tiếp tục bài giảng</string>
+    <string name="teacher_save_question">Bạn có muốn tiếp tục tạo bài giảng sau khi lưu?</string>
+    <string name="teacher_save_negative">Không</string>
+    <string name="teacher_save_positive">Đồng ý</string>
 
 </resources>

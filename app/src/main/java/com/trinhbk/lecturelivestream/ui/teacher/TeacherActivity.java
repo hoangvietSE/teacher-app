@@ -4,6 +4,7 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
@@ -99,6 +100,7 @@ import com.trinhbk.lecturelivestream.ui.dialog.settingvideo.SettingVideoDFragmen
 import com.trinhbk.lecturelivestream.utils.AppPreferences;
 import com.trinhbk.lecturelivestream.utils.Constants;
 import com.trinhbk.lecturelivestream.utils.DeviceUtil;
+import com.trinhbk.lecturelivestream.utils.DialogUtil;
 import com.trinhbk.lecturelivestream.utils.RecordUtil;
 import com.trinhbk.lecturelivestream.utils.ToastUtil;
 import com.trinhbk.lecturelivestream.utils.Utilities;
@@ -338,8 +340,10 @@ public class TeacherActivity extends BaseActivity implements SettingVideoDFragme
         movableFloatingActionButtonTopDown.setOnClickListener(view -> {
             if (llMenuMore.getVisibility() == View.VISIBLE) {
                 llMenuMore.setVisibility(View.GONE);
+                tvNumberPage.setVisibility(View.GONE);
             } else {
                 llMenuMore.setVisibility(View.VISIBLE);
+                tvNumberPage.setVisibility(View.VISIBLE);
             }
         });
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
@@ -352,6 +356,22 @@ public class TeacherActivity extends BaseActivity implements SettingVideoDFragme
                     relativeLayoutCamera.setVisibility(View.VISIBLE);
                 }
             });
+//            relativeLayoutSwipe = findViewById(R.id.rl_swipe);
+//            relativeLayoutSwipe.setOnTouchListener(new OnSwipeTouchEvent(TeacherActivity.this) {
+//                public void onSwipeTop() {
+//                    Toast.makeText(TeacherActivity.this, "top", Toast.LENGTH_SHORT).show();
+//                }
+//                public void onSwipeRight() {
+//                    Toast.makeText(TeacherActivity.this, "right", Toast.LENGTH_SHORT).show();
+//                }
+//                public void onSwipeLeft() {
+//                    Toast.makeText(TeacherActivity.this, "left", Toast.LENGTH_SHORT).show();
+//                }
+//                public void onSwipeBottom() {
+//                    Toast.makeText(TeacherActivity.this, "bottom", Toast.LENGTH_SHORT).show();
+//                }
+//
+//            });
         } else {
             //ORIENTATION_PORTRAIT
             textureView.setOnTouchListener(this);
@@ -565,9 +585,7 @@ public class TeacherActivity extends BaseActivity implements SettingVideoDFragme
                     .withStartFile(Environment.getExternalStorageState())
                     .withChosenListener((path, pathFile) -> {
                         RequestBody requestFile = RequestBody.create(MediaType.parse(Utilities.getMimeType(path)), pathFile);
-
                         MultipartBody.Part body = MultipartBody.Part.createFormData("File", pathFile.getName(), requestFile);
-
                         showLoading();
                         if (Utilities.getMimeType(path).equals("application/pdf")) {
                             getFilePDF(body);
@@ -636,14 +654,7 @@ public class TeacherActivity extends BaseActivity implements SettingVideoDFragme
                     liveDialog.dismiss();
                 });
             } else {
-                closeSettingView();
-//                    Toast.makeText(TeacherActivity.this, "Video is saved", Toast.LENGTH_SHORT).show();
-                Log.v(TAG, "Stopping Recording");
-                stopScreenSharing();
-                if (checkSessionRecord == true && listRecordsPath.size() >= 2) {
-                    RecordUtil.getInstance().appendVideo(listRecordsPath, listRecordsName);
-                }
-                clearRecord();
+                showConfirmSaveDialog();
             }
         });
 
@@ -659,6 +670,37 @@ public class TeacherActivity extends BaseActivity implements SettingVideoDFragme
 //                    Toast.makeText(TeacherActivity.this, "Device does not support Spen. \n You can draw stroke by finger.", Toast.LENGTH_SHORT).show();
         }
 
+    }
+
+    private void showConfirmSaveDialog() {
+        DialogUtil.showConfirmDialog(
+                this,
+                R.string.app_name,
+                R.string.teacher_save_question,
+                R.mipmap.ic_launcher,
+                R.string.teacher_save_negative,
+                R.string.teacher_save_positive,
+                (dialogInterface, postion) -> {
+                    normalSave();
+                    finish();
+                },
+                (dialogInterface, postion) -> {
+                    normalSave();
+                    startActivity(new Intent(this, TeacherActivity.class));
+                    finish();
+                }
+        );
+    }
+
+    private void normalSave() {
+        closeSettingView();
+//                    Toast.makeText(TeacherActivity.this, "Video is saved", Toast.LENGTH_SHORT).show();
+        Log.v(TAG, "Stopping Recording");
+        stopScreenSharing();
+        if (checkSessionRecord == true && listRecordsPath.size() >= 2) {
+            RecordUtil.getInstance().appendVideo(listRecordsPath, listRecordsName);
+        }
+        clearRecord();
     }
 
     private void initStateCallback() {
@@ -917,7 +959,6 @@ public class TeacherActivity extends BaseActivity implements SettingVideoDFragme
 
     private void showListVideo() {
         ToastUtil.getInstance().show(getString(R.string.teacher_save_success));
-        finish();
     }
 
     private void initMedia() {

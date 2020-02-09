@@ -50,10 +50,10 @@ public class MainApplication extends Application {
             e.printStackTrace();
         }
         initLiveSite();
-        initDeploydate();
+        initDeploygate();
     }
 
-    private void initDeploydate() {
+    private void initDeploygate() {
         DeployGate.install(this);
     }
 
