@@ -4,7 +4,6 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
@@ -143,6 +142,7 @@ public class TeacherActivity extends BaseActivity implements SettingVideoDFragme
     private static final int REQUEST_CODE_RECORD = 94;
     private static final int REQUEST_CODE_STREAM = 95;
     static final int REQUEST_CAMERA_PERMISSION = 1009;
+    static final int PICK_PDF_CODE = 1010;
     private AutoFitTextureView textureView;
     //Check state orientation of output image
     private static final SparseIntArray ORIENTATIONS = new SparseIntArray();
@@ -321,6 +321,8 @@ public class TeacherActivity extends BaseActivity implements SettingVideoDFragme
         chronometer = findViewById(R.id.simpleChronometer);
         movableFloatingActionButtonTopDown = findViewById(R.id.mfa_top_down);
         llMenuMore = findViewById(R.id.llMenuMore);
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+        }
     }
 
     private void initListener() {
@@ -584,21 +586,24 @@ public class TeacherActivity extends BaseActivity implements SettingVideoDFragme
             new ChooserDialog().with(TeacherActivity.this)
                     .withStartFile(Environment.getExternalStorageState())
                     .withChosenListener((path, pathFile) -> {
-                        RequestBody requestFile = RequestBody.create(MediaType.parse(Utilities.getMimeType(path)), pathFile);
+                        RequestBody requestFile = RequestBody.create(MediaType.parse("application/pdf"), pathFile);
                         MultipartBody.Part body = MultipartBody.Part.createFormData("File", pathFile.getName(), requestFile);
                         showLoading();
-                        if (Utilities.getMimeType(path).equals("application/pdf")) {
-                            getFilePDF(body);
-                        } else if (Utilities.getMimeType(path).equals("application/ppt")) {
-                            getFilePPT(body);
-                        } else if (Utilities.getMimeType(path).equals("application/pptx")) {
-                            getFilePPTX(body);
-                        } else {
-                            showErrorDialog("Thông báo", "Định dạng không thể convert được", liveDialog -> liveDialog.dismiss());
-                        }
+                        getFilePDF(body);
+//                        if (Utilities.getMimeType(path).equals("application/pdf")) {
+//                            getFilePDF(body);
+//                        } else if (Utilities.getMimeType(path).equals("application/ppt")) {
+//                            getFilePPT(body);
+//                        } else if (Utilities.getMimeType(path).equals("application/pptx")) {
+//                            getFilePPTX(body);
+//                        } else {
+//                            showErrorDialog("Thông báo", "Định dạng không thể convert được", liveDialog -> liveDialog.dismiss());
+//                        }
+
                     })
                     .build()
                     .show();
+
         });
 
         ibAddPage.setOnClickListener(view -> {
@@ -1514,7 +1519,11 @@ public class TeacherActivity extends BaseActivity implements SettingVideoDFragme
                 }
                 String imageRealPath = getRealPathFromURI(imageFileUri);
                 mPenPageDoc.setBackgroundImage(imageRealPath);
-                mPenPageDoc.setBackgroundImageMode(SpenPageDoc.BACKGROUND_IMAGE_MODE_FIT);
+                if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                    mPenPageDoc.setBackgroundImageMode(SpenPageDoc.BACKGROUND_IMAGE_MODE_FIT);
+                } else {
+                    mPenPageDoc.setBackgroundImageMode(SpenPageDoc.BACKGROUND_IMAGE_MODE_STRETCH);
+                }
                 mPenSurfaceView.update();
             }
             if (requestCode == REQUEST_CODE_SELECT_IMAGE) {
@@ -1522,10 +1531,9 @@ public class TeacherActivity extends BaseActivity implements SettingVideoDFragme
                 String imageRealPath = getRealPathFromURI(imageFileUri);
                 SpenObjectImage imgObj = new SpenObjectImage();
                 imgObj.setImage(imageRealPath);
-                RectF rect1 = new RectF(mPenPageDoc.getWidth() / 4, mPenPageDoc.getWidth() / 4, mPenPageDoc.getWidth() / 2, mPenPageDoc.getHeight() / 2);
+                RectF rect1 = new RectF(0, 0, penViewContainer.getWidth(), penViewContainer.getHeight());
                 imgObj.setRect(rect1, true);
                 mPenPageDoc.appendObject(imgObj);
-                mPenPageDoc.selectObject(imgObj);
                 mPenSurfaceView.update();
             }
 
@@ -1539,7 +1547,6 @@ public class TeacherActivity extends BaseActivity implements SettingVideoDFragme
                     slowInitRecordVideoTask.execute();
                 }
             }
-
             if (requestCode == REQUEST_CODE_RECORD) {
                 hideLoading();
                 SlowInitRecordVideoTask slowInitRecordVideoTask = new SlowInitRecordVideoTask(resultCode, data);
