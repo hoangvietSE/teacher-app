@@ -1,5 +1,6 @@
 package com.trinhbk.lecturelivestream.utils;
 
+import android.content.ContentResolver;
 import android.content.Context;
 import android.os.Environment;
 import android.webkit.MimeTypeMap;
@@ -20,9 +21,10 @@ public class Utilities {
 
     public static String getMimeType(String url) {
         String type = null;
-        String extension = MimeTypeMap.getFileExtensionFromUrl(url);
-        if (extension != null) {
-            type = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension);
+        if (url.lastIndexOf(".") != -1) {
+            String ext = url.substring(url.lastIndexOf(".") + 1);
+            MimeTypeMap mime = MimeTypeMap.getSingleton();
+            type = mime.getMimeTypeFromExtension(ext);
         }
         return type;
     }

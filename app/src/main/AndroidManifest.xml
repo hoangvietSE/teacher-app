@@ -43,7 +43,8 @@
         <activity android:name=".ui.home.HomeActivity"/>
         <activity android:name=".ui.clip.ListVideoActivity" />
         <activity android:name=".ui.trimmer.EditVideoActivity" />
-        <activity android:name=".ui.teacher.TeacherActivity" />
+        <activity
+            android:name=".ui.teacher.TeacherActivity" />
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
