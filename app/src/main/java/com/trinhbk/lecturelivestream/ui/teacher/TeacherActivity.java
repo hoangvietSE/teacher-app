@@ -123,6 +123,7 @@ import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import top.defaults.colorpicker.ColorPickerPopup;
 
 public class TeacherActivity extends BaseActivity implements SettingVideoDFragment.OnClickSettingVideo, ConnectCheckerRtmp, SettingTimeTempBushDFragment.OnClickSettingTime, View.OnTouchListener {
 
@@ -226,6 +227,7 @@ public class TeacherActivity extends BaseActivity implements SettingVideoDFragme
     private int lastAction;
     private float dX;
     private float dY;
+    private Integer backgorundColor;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -440,7 +442,7 @@ public class TeacherActivity extends BaseActivity implements SettingVideoDFragme
 
         // After adding a page to NoteDoc, get an instance and set it as a member variable.
         mPenPageDoc = mPenNoteDoc.appendPage();
-        mPenPageDoc.setBackgroundColor(0xFFD6E6F5);
+        setBackgroundColor(backgorundColor);
         mPenPageDoc.clearHistory();
 
         // Set PageDoc to View.
@@ -526,7 +528,24 @@ public class TeacherActivity extends BaseActivity implements SettingVideoDFragme
 
         ibAddImageBackground.setOnClickListener(view -> {
             closeSettingView();
-            callGalleryForInputImage(REQUEST_CODE_SELECT_IMAGE_BACKGROUND);
+//            callGalleryForInputImage(REQUEST_CODE_SELECT_IMAGE_BACKGROUND);
+            new ColorPickerPopup.Builder(this)
+                    .initialColor(Color.RED) // Set initial color
+                    .enableBrightness(true) // Enable brightness slider or not
+                    .enableAlpha(true) // Enable alpha slider or not
+                    .okTitle("Đồng ý")
+                    .cancelTitle("Hủy bỏ")
+                    .showIndicator(true)
+                    .showValue(true)
+                    .build()
+                    .show(view, new ColorPickerPopup.ColorPickerObserver() {
+                        @Override
+                        public void onColorPicked(int color) {
+                            backgorundColor = color;
+                            setBackgroundColor(backgorundColor);
+                        }
+                    });
+
         });
 
         ibInsertImage.setOnClickListener(view -> {
@@ -586,19 +605,18 @@ public class TeacherActivity extends BaseActivity implements SettingVideoDFragme
             new ChooserDialog().with(TeacherActivity.this)
                     .withStartFile(Environment.getExternalStorageState())
                     .withChosenListener((path, pathFile) -> {
-                        RequestBody requestFile = RequestBody.create(MediaType.parse("application/pdf"), pathFile);
+                        RequestBody requestFile = RequestBody.create(MediaType.parse(Utilities.getMimeType(path)), pathFile);
                         MultipartBody.Part body = MultipartBody.Part.createFormData("File", pathFile.getName(), requestFile);
                         showLoading();
-                        getFilePDF(body);
-//                        if (Utilities.getMimeType(path).equals("application/pdf")) {
-//                            getFilePDF(body);
-//                        } else if (Utilities.getMimeType(path).equals("application/ppt")) {
-//                            getFilePPT(body);
-//                        } else if (Utilities.getMimeType(path).equals("application/pptx")) {
-//                            getFilePPTX(body);
-//                        } else {
-//                            showErrorDialog("Thông báo", "Định dạng không thể convert được", liveDialog -> liveDialog.dismiss());
-//                        }
+                        if (Utilities.getMimeType(path).equals("application/pdf")) {
+                            getFilePDF(body);
+                        } else if (Utilities.getMimeType(path).equals("application/ppt")) {
+                            getFilePPT(body);
+                        } else if (Utilities.getMimeType(path).equals("application/pptx")) {
+                            getFilePPTX(body);
+                        } else {
+                            showErrorDialog("Thông báo", "Định dạng không thể convert được", liveDialog -> liveDialog.dismiss());
+                        }
 
                     })
                     .build()
@@ -612,7 +630,7 @@ public class TeacherActivity extends BaseActivity implements SettingVideoDFragme
             closeSettingView();
             // Create a page next to the current page.
             mPenPageDoc = mPenNoteDoc.insertPage(mPenNoteDoc.getPageIndexById(mPenPageDoc.getId()) + 1);
-            mPenPageDoc.setBackgroundColor(0xFFD6E6F5);
+            setBackgroundColor(backgorundColor);
             mPenPageDoc.clearHistory();
             view.setClickable(false);
             mPenSurfaceView.setPageDoc(mPenPageDoc, SpenSurfaceView.PAGE_TRANSITION_EFFECT_RIGHT, SpenSurfaceView.PAGE_TRANSITION_EFFECT_TYPE_SHADOW, 0);
@@ -841,7 +859,7 @@ public class TeacherActivity extends BaseActivity implements SettingVideoDFragme
                 mPenPageDoc.setBackgroundImage(file.getAbsolutePath());
                 mPenPageDoc.setBackgroundImageMode(SpenPageDoc.BACKGROUND_IMAGE_MODE_FIT);
                 mPenPageDoc = mPenNoteDoc.insertPage(mPenNoteDoc.getPageIndexById(mPenPageDoc.getId()) + 1);
-                mPenPageDoc.setBackgroundColor(0xFFD6E6F5);
+                setBackgroundColor(backgorundColor);
                 mPenPageDoc.clearHistory();
             }
             return null;
@@ -1819,5 +1837,14 @@ public class TeacherActivity extends BaseActivity implements SettingVideoDFragme
         listRecordsName.clear();
         listRecordsPath.clear();
         showListVideo();
+    }
+
+    private void setBackgroundColor(Integer backgorundColor){
+        if (backgorundColor != null) {
+            mPenPageDoc.setBackgroundColor(backgorundColor);
+        } else {
+            mPenPageDoc.setBackgroundColor(0xFFD6E6F5);
+        }
+        mPenSurfaceView.update();
     }
 }
