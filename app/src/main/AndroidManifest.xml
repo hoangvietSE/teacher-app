@@ -32,19 +32,20 @@
         <activity android:name=".ui.signin.LoginActivity" />
 
         <activity
-            android:theme="@style/SplashTheme"
-            android:name=".ui.splash.SplashActivity">
+            android:name=".ui.splash.SplashActivity"
+            android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.home.HomeActivity"/>
+        <activity android:name=".ui.home.HomeActivity" />
         <activity android:name=".ui.clip.ListVideoActivity" />
         <activity android:name=".ui.trimmer.EditVideoActivity" />
         <activity
-            android:name=".ui.teacher.TeacherActivity" />
+            android:name=".ui.teacher.TeacherActivity"
+            android:configChanges="orientation" />
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"

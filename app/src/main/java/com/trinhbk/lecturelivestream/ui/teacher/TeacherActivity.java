@@ -90,6 +90,7 @@ import com.trinhbk.lecturelivestream.R;
 import com.trinhbk.lecturelivestream.application.MainApplication;
 import com.trinhbk.lecturelivestream.customview.AutoFitTextureView;
 import com.trinhbk.lecturelivestream.customview.MovableFloatingActionButton;
+import com.trinhbk.lecturelivestream.customview.OnSwipeTouchEvent;
 import com.trinhbk.lecturelivestream.customview.SplitPaneLayout;
 import com.trinhbk.lecturelivestream.network.LiveSiteService;
 import com.trinhbk.lecturelivestream.network.response.FileResponse;
@@ -182,6 +183,7 @@ public class TeacherActivity extends BaseActivity implements SettingVideoDFragme
     private RelativeLayout relativeLayoutCamera;
     private LinearLayout llMenuMore;
     private SplitPaneLayout splitHorizontal;
+    private RelativeLayout drawView;
     private FrameLayout penViewContainer;
     private RelativeLayout penViewLayout;
     private SpenNoteDoc mPenNoteDoc;
@@ -324,6 +326,8 @@ public class TeacherActivity extends BaseActivity implements SettingVideoDFragme
         movableFloatingActionButtonTopDown = findViewById(R.id.mfa_top_down);
         llMenuMore = findViewById(R.id.llMenuMore);
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            movableFloatingActionButtonLeftRight = findViewById(R.id.mfa_left_right);
+            drawView = findViewById(R.id.drawView);
         }
     }
 
@@ -351,7 +355,6 @@ public class TeacherActivity extends BaseActivity implements SettingVideoDFragme
             }
         });
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            movableFloatingActionButtonLeftRight = findViewById(R.id.mfa_left_right);
             relativeLayoutCamera = findViewById(R.id.rl_camera);
             movableFloatingActionButtonLeftRight.setOnClickListener(view -> {
                 if (relativeLayoutCamera.getVisibility() == View.VISIBLE) {
@@ -360,22 +363,19 @@ public class TeacherActivity extends BaseActivity implements SettingVideoDFragme
                     relativeLayoutCamera.setVisibility(View.VISIBLE);
                 }
             });
-//            relativeLayoutSwipe = findViewById(R.id.rl_swipe);
-//            relativeLayoutSwipe.setOnTouchListener(new OnSwipeTouchEvent(TeacherActivity.this) {
-//                public void onSwipeTop() {
-//                    Toast.makeText(TeacherActivity.this, "top", Toast.LENGTH_SHORT).show();
-//                }
-//                public void onSwipeRight() {
-//                    Toast.makeText(TeacherActivity.this, "right", Toast.LENGTH_SHORT).show();
-//                }
-//                public void onSwipeLeft() {
-//                    Toast.makeText(TeacherActivity.this, "left", Toast.LENGTH_SHORT).show();
-//                }
-//                public void onSwipeBottom() {
-//                    Toast.makeText(TeacherActivity.this, "bottom", Toast.LENGTH_SHORT).show();
-//                }
-//
-//            });
+            drawView.setOnTouchListener(new OnSwipeTouchEvent(TeacherActivity.this) {
+                public void onSwipeTop() {
+                }
+                public void onSwipeRight() {
+                    Toast.makeText(TeacherActivity.this, "right", Toast.LENGTH_SHORT).show();
+                }
+                public void onSwipeLeft() {
+                    Toast.makeText(TeacherActivity.this, "left", Toast.LENGTH_SHORT).show();
+                }
+                public void onSwipeBottom() {
+                }
+
+            });
         } else {
             //ORIENTATION_PORTRAIT
             textureView.setOnTouchListener(this);
@@ -610,9 +610,11 @@ public class TeacherActivity extends BaseActivity implements SettingVideoDFragme
                         showLoading();
                         if (Utilities.getMimeType(path).equals("application/pdf")) {
                             getFilePDF(body);
-                        } else if (Utilities.getMimeType(path).equals("application/ppt")) {
+                        } else if (Utilities.getMimeType(path).equals("application/ppt")
+                                ||Utilities.getMimeType(path).equals("application/vnd.ms-powerpoint")) {
                             getFilePPT(body);
-                        } else if (Utilities.getMimeType(path).equals("application/pptx")) {
+                        } else if (Utilities.getMimeType(path).equals("application/pptx")
+                                || Utilities.getMimeType(path).equals("application/vnd.openxmlformats-officedocument.presentationml.presentation")) {
                             getFilePPTX(body);
                         } else {
                             showErrorDialog("Thông báo", "Định dạng không thể convert được", liveDialog -> liveDialog.dismiss());
